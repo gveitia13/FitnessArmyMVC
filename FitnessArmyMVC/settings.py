@@ -76,11 +76,10 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-BUSINESS_LOGO_PATH = 'admin/img/logo-sm-blue-white.png'
-BUSINESS_NAME = 'TechnoStar'
-BUSINESS_NAME_IMG_PATH = 'admin/img/logo_lg.png'
-BUSINESS_BANNER = 'admin/img/banner_lg.png'
-BUSINESS_ICON_PATH = 'admin/img/logo-sm-blue-black.png'
+BUSINESS_LOGO_PATH = 'admin/img/logo.jpg'
+BUSINESS_NAME = 'Fitness Army'
+BUSINESS_NAME_IMG_PATH = 'admin/img/logo.jpg'
+BUSINESS_ICON_PATH = 'admin/img/favicon.ico'
 
 JAZZMIN_SETTINGS = {
     "site_brand": BUSINESS_NAME,
@@ -92,7 +91,7 @@ JAZZMIN_SETTINGS = {
     "login_logo_dark": False,
     'site_header': BUSINESS_NAME,
     "custom_css": 'admin/css/admin.css',
-    'copyright': 'By TechnoStar',
+    'copyright': 'By GoDjango',
     'custom_js': 'admin/js/admin.js',
     # "related_modal_active": True,
     # "search_model": ["auth.User", "auth.Group"],

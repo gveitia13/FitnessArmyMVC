@@ -10,6 +10,7 @@ django-crum==0.7.9
 django-environ==0.10.0
 django-jazzmin==2.6.0
 django-js-asset==2.0.0
+django-solo==2.0.0
 django-widget-tweaks==1.4.12
 djangorestframework==3.14.0
 googletrans==3.0.0
