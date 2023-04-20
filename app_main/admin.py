@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import User, Group
 from solo.admin import SingletonModelAdmin
 
 from app_main.forms import ConfigForm, ProductForm, PropertyForm
@@ -55,3 +56,7 @@ class ProductAdmin(admin.ModelAdmin):
         for p in queryset:
             p.is_active = True
             p.save()
+
+
+# admin.site.unregister(User)
+admin.site.unregister(Group)

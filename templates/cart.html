@@ -1,0 +1,274 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="../favicon.ico" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="../logo192.png" />
+    <title>Fitness Army</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+      <div class="container">
+        <div class="navbar fixed-top container bg-white">
+          <i class="icono fa fa-close d-sm-none d-none"></i>
+          <i class="icono fa fa-bars d-sm-none"></i>
+          <div class="logo">
+            <a href="../index.html"><img src="../logo.jpg" alt="Logo" /></a>
+          </div>
+          <ul
+            class="navbar-nav d-flex flex-column justify-content-between false"
+          >
+            <span class="d-flex flex-column flex-md-row gap-3"
+              ><li><a class="nav-item" href="../index.html">Home</a></li>
+              <li><a class="nav-item" href="catalog.html">Catalog</a></li>
+              <li>
+                <a class="nav-item" href="contact.html" aria-current="page"
+                  >Contact</a
+                >
+              </li></span
+            ><span class="nav-redes p-2 d-md-none"
+              ><i class="icono fa fa-facebook"></i
+              ><i class="icono fa fa-instagram"></i
+            ></span>
+          </ul>
+          <i class="icono fa fa-search"></i>
+          <div
+            class="nav-search position-absolute bg-white top-0 start-0 w-100 d-flex justify-content-md-end align-items-baseline py-4 px-2 search-close"
+          >
+            <input
+              type="search"
+              name="search"
+              id="search-input"
+              class="flex-grow-1 flex-md-grow-0 w-25"
+            /><i class="icono fa fa-search"></i
+            ><i class="icono fa fa-close nav-search-close"></i>
+          </div>
+          <a href="cart.html"><i class="icono fa fa-shopping-bag"></i></a>
+        </div>
+
+        <div class="cart-wrapper">
+          <div class="d-flex justify-content-between align-items-center">
+            <h2>Your Cart</h2>
+            <a class="" href="catalog.html">Continue shoping</a>
+          </div>
+          <table class="table fw-lighter">
+            <thead>
+              <tr>
+                <td>Product</td>
+                <td>Quantity</td>
+                <td>Total</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="d-md-flex">
+                  <img
+                    src="../assets/producto1.jpg"
+                    alt="imagen de producto"
+                  /><span class=""
+                    ><p class="fw-normal">
+                      Creatina Platinium 400gr - 80 servicios
+                    </p>
+                    <span>$45.00</span></span
+                  >
+                </td>
+                <td>
+                  <div
+                    class="d-flex flex-column flex-md-row align-items-center"
+                  >
+                    <div
+                      class="counter-wrapper mt-1 me-2 mb-3 mb-sm-0 d-flex justify-content-between align-items-center"
+                    >
+                      <i
+                        onclick="{restar(0)}"
+                        class="icono fa fa-minus fw-lighter counter-sub"
+                      ></i
+                      ><span class="fw-bold counter-num">1</span
+                      ><i
+                        onclick="{sumar(0)}"
+                        class="icono fa fa-plus me-md-3 counter-sum"
+                      ></i>
+                    </div>
+                    <i class="icono fa fa-trash me-md-5"></i>
+                  </div>
+                </td>
+                <td>$45.00</td>
+              </tr>
+              <tr>
+                <td class="d-md-flex">
+                  <img
+                    src="../assets/producto2.jpg"
+                    alt="imagen de producto"
+                  /><span class=""
+                    ><p class="fw-normal">
+                      Muscle Tech Cell-Tech Creator 120 servicios
+                    </p>
+                    <span>$38.00</span></span
+                  >
+                </td>
+                <td>
+                  <div
+                    class="d-flex flex-column flex-md-row align-items-center"
+                  >
+                    <div
+                      class="counter-wrapper mt-1 me-2 mb-3 mb-sm-0 d-flex justify-content-between align-items-center"
+                    >
+                      <i
+                        onclick="{restar(1)}"
+                        class="icono fa fa-minus fw-lighter counter-sub"
+                      ></i
+                      ><span class="fw-bold counter-num">1</span
+                      ><i
+                        onclick="{sumar(1)}"
+                        class="icono fa fa-plus me-sm-3 counter-sum"
+                      ></i>
+                    </div>
+                    <i class="icono fa fa-trash"></i>
+                  </div>
+                </td>
+                <td>$38.00</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-center justify-content-md-end">
+            <span class="text-muted">Total $83.00</span>
+          </div>
+        </div>
+        <form class="my-5 pay-wrapper">
+          <div class="row mb-3">
+            <div class="col-12 col-md-6">
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  autocomplete="off"
+                  placeholder=" "
+                /><label for="name">Name</label>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="adress"
+                  autocomplete="off"
+                  placeholder=" "
+                /><label for="adress">Adress</label>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-floating mb-3">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  autocomplete="off"
+                  placeholder=" "
+                /><label for="email">Email (Optional)</label>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-floating mb-3">
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phone"
+                  autocomplete="off"
+                  placeholder=" "
+                /><label for="phone">Phone Number</label>
+              </div>
+            </div>
+          </div>
+          <button>Pay</button>
+        </form>
+
+        <div class="footer-wrapper">
+          <hr class="dropdown-divider" />
+          <div class="promo-wrapper text-center my-4">
+            <img src="../assets/promo.jpg" alt="imagen de promocion" />
+          </div>
+          <div
+            class="d-flex flex-column flex-md-row align-items-center align-items-md-end justify-content-between"
+          >
+            <div>
+              <span>Suscribe to our email</span>
+              <div class="footer-email-wrapper input-group my-2">
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  class="form-control"
+                  aria-describedby="email"
+                  autocomplete="off"
+                /><span id="email"
+                  ><i class="icono fa fa-arrow-right"></i
+                ></span>
+              </div>
+            </div>
+            <div class="footer-redes my-3 text-center">
+              <i class="icono fa fa-facebook"></i
+              ><i class="icono fa fa-instagram"></i>
+            </div>
+          </div>
+          <hr class="dropdown-divider" />
+          <div class="brand-list d-flex justify-content-center flex-wrap">
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+          </div>
+          <p class="copyright text-center text-muted mt-3">
+            @2023 GoDjango | Powered by
+            <a class="text-muted" href="https://wa.me/message/ST66CS7X7BHZM1"
+              >Ezequiel Brito</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,190 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="../favicon.ico" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="../logo192.png" />
+    <title>Fitness Army</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+      <div class="container">
+        <div class="navbar fixed-top container bg-white">
+          <i class="icono fa fa-close d-sm-none d-none"></i>
+          <i class="icono fa fa-bars d-sm-none"></i>
+          <div class="logo">
+            <a href="../index.html"><img src="../logo.jpg" alt="Logo" /></a>
+          </div>
+          <ul
+            class="navbar-nav d-flex flex-column justify-content-between false"
+          >
+            <span class="d-flex flex-column flex-md-row gap-3"
+              ><li><a class="nav-item" href="../index.html">Home</a></li>
+              <li><a class="nav-item" href="catalog.html">Catalog</a></li>
+              <li>
+                <a class="nav-item" href="contact.html" aria-current="page"
+                  >Contact</a
+                >
+              </li></span
+            ><span class="nav-redes p-2 d-md-none"
+              ><i class="icono fa fa-facebook"></i
+              ><i class="icono fa fa-instagram"></i
+            ></span>
+          </ul>
+          <i class="icono fa fa-search"></i>
+          <div
+            class="nav-search position-absolute bg-white top-0 start-0 w-100 d-flex justify-content-md-end align-items-baseline py-4 px-2 search-close"
+          >
+            <input
+              type="search"
+              name="search"
+              id="search-input"
+              class="flex-grow-1 flex-md-grow-0 w-25"
+            /><i class="icono fa fa-search"></i
+            ><i class="icono fa fa-close nav-search-close"></i>
+          </div>
+          <a href="cart.html"><i class="icono fa fa-shopping-bag"></i></a>
+        </div>
+
+        <div class="product-screen row">
+          <div
+            class="col-12 col-md-6 mb-3 d-flex justify-content-center align-items-start"
+          >
+            <img
+              src="../assets/producto1.jpg"
+              alt="Imagen de producto"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <h6 class="text-muted">FITNESS ARMY</h6>
+            <h4 class="fw-normal">Creatina Platinium 400gr - 80 servicios</h1>
+            <p>$45.00 USD</p>
+            <div>
+              <span>Quantity</span>
+              <div
+                class="counter-wrapper mt-1 d-flex justify-content-between align-items-center"
+              >
+                <i onclick={restar(0)} class="icono fa fa-minus fw-lighter counter-sub"></i
+                ><span class="fw-bold counter-num">1</span>
+                <i onclick={sumar(0)} class="icono fa fa-plus counter-sum"></i>
+              </div>
+            </div>
+            <div class="addCart-button text-center mt-3">Add to cart</div>
+            <div class="properties-wrapper text text-muted mt-3">
+              <h5>Propiedades</h5>
+              <ul>
+                <li>
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                </li>
+                <li>
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                </li>
+                <li>
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                </li>
+                <li>
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                </li>
+                <li>
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                </li>
+              </ul>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Necessitatibus perferendis minus suscipit est quaerat,
+                voluptates illum doloremque rerum aut! Nam reprehenderit aliquam
+                praesentium earum quis doloribus vel exercitationem maiores
+                commodi!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-wrapper">
+          <hr class="dropdown-divider" />
+          <div class="promo-wrapper text-center my-4">
+            <img src="../assets/promo.jpg" alt="imagen de promocion" />
+          </div>
+          <div
+            class="d-flex flex-column flex-md-row align-items-center align-items-md-end justify-content-between"
+          >
+            <div>
+              <span>Suscribe to our email</span>
+              <div class="footer-email-wrapper input-group my-2">
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  class="form-control"
+                  aria-describedby="email"
+                  autocomplete="off"
+                /><span id="email"
+                  ><i class="icono fa fa-arrow-right"></i
+                ></span>
+              </div>
+            </div>
+            <div class="footer-redes my-3 text-center">
+              <i class="icono fa fa-facebook"></i
+              ><i class="icono fa fa-instagram"></i>
+            </div>
+          </div>
+          <hr class="dropdown-divider" />
+          <div class="brand-list d-flex justify-content-center flex-wrap">
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+          </div>
+          <p class="copyright text-center text-muted mt-3">
+            @2023 GoDjango | Powered by
+            <a class="text-muted" href="https://wa.me/message/ST66CS7X7BHZM1"
+              >Ezequiel Brito</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/app.js"></script>
+  </body>
+</html>

@@ -18,7 +18,6 @@ from django.urls import reverse_lazy
 # BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -99,10 +98,13 @@ JAZZMIN_SETTINGS = {
     "user_avatar": 'get_profile_photo',
     "icons": {
         "auth": "fas fa-users-cog",
-        "user.User": "fas fa-user",
+        "auth.User": "fas fa-users",
         "auth.Group": "fas fa-users",
+        "app_main.Config": "fas fa-cog",
+        # "app_main.Product": "fas fa-shopping-bag",
+        "app_main.Product": "fas fa-box-open",
     },
-    "order_with_respect_to": ["user", "core", 'core.config'],
+    "order_with_respect_to": ['app_main'],
 }
 
 MIDDLEWARE = [

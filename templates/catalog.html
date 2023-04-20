@@ -1,0 +1,344 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="../favicon.ico" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="../logo192.png" />
+    <title>Fitness Army</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+      <div class="container">
+        <div class="navbar fixed-top container bg-white">
+          <i class="icono fa fa-close d-sm-none d-none"></i>
+          <i class="icono fa fa-bars d-sm-none"></i>
+          <div class="logo">
+            <a href="../index.html"><img src="../logo.jpg" alt="Logo" /></a>
+          </div>
+          <ul
+            class="navbar-nav d-flex flex-column justify-content-between false"
+          >
+            <span class="d-flex flex-column flex-md-row gap-3"
+              ><li><a class="nav-item" href="../index.html">Home</a></li>
+              <li><a class="nav-item active" href="catalog.html">Catalog</a></li>
+              <li>
+                <a class="nav-item" href="contact.html" aria-current="page"
+                  >Contact</a
+                >
+              </li></span
+            ><span class="nav-redes p-2 d-md-none"
+              ><i class="icono fa fa-facebook"></i
+              ><i class="icono fa fa-instagram"></i
+            ></span>
+          </ul>
+          <i class="icono fa fa-search"></i>
+          <div
+            class="nav-search position-absolute bg-white top-0 start-0 w-100 d-flex justify-content-md-end align-items-baseline py-4 px-2 search-close"
+          >
+            <input
+              type="search"
+              name="search"
+              id="search-input"
+              class="flex-grow-1 flex-md-grow-0 w-25"
+            /><i class="icono fa fa-search"></i
+            ><i class="icono fa fa-close nav-search-close"></i>
+          </div>
+          <a href="cart.html"><i class="icono fa fa-shopping-bag"></i></a>
+        </div>
+        <div class="catalog-wrapper">
+          <h2>Products</h2>
+          <div class="text-muted d-flex justify-content-between">
+            <span class="sort-button"><i class="icono fa fa-sort"></i>Filter and sort</span
+            ><span>3 products</span>
+          </div>
+          <div class="row mt-2">
+            <div class="col-6 col-md-3">
+              <div onclick={navigateToProduct()}
+                class="product-wrapper d-flex flex-column justify-content-between"
+              >
+                <div class="product-img-wrapper">
+                  <img
+                    class="product-img"
+                    src="../assets/producto1.jpg"
+                    alt="Imagen de producto"
+                  />
+                </div>
+                <div>
+                  <p class="product-desc">
+                    Creatina Platinium 400gr - 80 servicios
+                  </p>
+                  <span class="product-cost">$45.00 USD</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div onclick={navigateToProduct()}
+                class="product-wrapper d-flex flex-column justify-content-between"
+              >
+                <div class="product-img-wrapper">
+                  <img
+                    class="product-img"
+                    src="../assets/producto2.jpg"
+                    alt="Imagen de producto"
+                  />
+                </div>
+                <div>
+                  <p class="product-desc">
+                    Muscle Tech Cell-Tech Creator 120 servicios
+                  </p>
+                  <span class="product-cost">$38.00 USD</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div onclick={navigateToProduct()}
+                class="product-wrapper d-flex flex-column justify-content-between"
+              >
+                <div class="product-img-wrapper">
+                  <img
+                    class="product-img"
+                    src="../assets/producto3.jpg"
+                    alt="Imagen de producto"
+                  />
+                </div>
+                <div>
+                  <p class="product-desc">
+                    Nutrex Creatine Drive300gr - 60 servicios
+                  </p>
+                  <span class="product-cost">$35.00 USD</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="filter-wrapper d-flex flex-column justify-content-between filter-close"
+          >
+            <div>
+              <hr class="dropdown-divider" />
+              <div class="d-flex justify-content-between align-items-baseline">
+                <div class="text-center">
+                  <span class="fs-4 d-block">Filter and Sort</span
+                  ><span class="fs-6 d-block text-muted">3 products</span>
+                </div>
+                <i class="icono fa fa-close filter-close-button"></i>
+              </div>
+              <hr class="dropdown-divider" />
+              <div
+                class="d-flex justify-content-between align-items-baseline text-muted my-4 availability-button"
+              >
+                <span>Availability</span><i class="icono fa fa-arrow-right"></i>
+              </div>
+              <div
+                class="d-flex justify-content-between align-items-baseline text-muted my-4 price-button"
+              >
+                <span>Price</span><i class="icono fa fa-arrow-right"></i>
+              </div>
+              <div
+                class="d-flex justify-content-between align-items-baseline text-muted my-4"
+              >
+                <span class="flex-grow-1">Sorty by:</span
+                ><select
+                  class="form-select small"
+                  aria-label="Default select example"
+                >
+                  <option>Alphabetically, A-Z</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <hr class="dropdown-divider" />
+              <div class="d-flex justify-content-between">
+                <button class="filter-remove-button">Remove all</button
+                ><button class="filter-apply-button">Apply</button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="availability-wrapper d-flex flex-column justify-content-between availability-close"
+          >
+            <div>
+              <hr class="dropdown-divider" />
+              <div class="d-flex justify-content-between align-items-baseline">
+                <div class="text-center">
+                  <span class="fs-4 d-block">Filter and Sort</span
+                  ><span class="fs-6 d-block text-muted">3 products</span>
+                </div>
+                <i class="icono fa fa-close availability-close-button"></i>
+              </div>
+              <hr class="dropdown-divider" />
+              <div
+                class="d-flex justify-content-start align-items-center text-muted my-4 availability-close-button"
+              >
+                <i class="icono fa fa-arrow-left"></i><span>Availability</span>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="stock"
+                  value=""
+                /><label class="form-check-label" for="stock"
+                  >In stock (3)</label
+                >
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="out-stock"
+                  disabled=""
+                  value=""
+                /><label class="form-check-label" for="out-stock"
+                  >Out of stock (0)</label
+                >
+              </div>
+            </div>
+            <div>
+              <hr class="dropdown-divider" />
+              <div class="d-flex justify-content-between">
+                <button class="filter-remove-button">Clear</button
+                ><button class="filter-apply-button">Apply</button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="price-wrapper d-flex flex-column justify-content-between price-close"
+          >
+            <div>
+              <hr class="dropdown-divider" />
+              <div class="d-flex justify-content-between align-items-baseline">
+                <div class="text-center">
+                  <span class="fs-4 d-block">Filter and Sort</span
+                  ><span class="fs-6 d-block text-muted">3 products</span>
+                </div>
+                <i class="icono fa fa-close price-close-button"></i>
+              </div>
+              <hr class="dropdown-divider" />
+              <div
+                class="d-flex justify-content-start align-items-center text-muted my-4 price-close-button"
+              >
+                <i class="icono fa fa-arrow-left"></i><span>Price</span>
+              </div>
+              <p>The highest price is $45.00</p>
+              <div class="row g-2">
+                <div class="col-6">
+                  <div class="form-floating">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="price-from"
+                    /><label for="price-from">From</label>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-floating">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="price-to"
+                    /><label for="price-to">To</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <hr class="dropdown-divider" />
+              <div class="d-flex justify-content-between">
+                <button class="filter-remove-button">Clear</button
+                ><button class="filter-apply-button">Apply</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-wrapper">
+          <hr class="dropdown-divider" />
+          <div class="promo-wrapper text-center my-4">
+            <img src="../assets/promo.jpg" alt="imagen de promocion" />
+          </div>
+          <div
+            class="d-flex flex-column flex-md-row align-items-center align-items-md-end justify-content-between"
+          >
+            <div>
+              <span>Suscribe to our email</span>
+              <div class="footer-email-wrapper input-group my-2">
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  class="form-control"
+                  aria-describedby="email"
+                  autocomplete="off"
+                /><span id="email"
+                  ><i class="icono fa fa-arrow-right"></i
+                ></span>
+              </div>
+            </div>
+            <div class="footer-redes my-3 text-center">
+              <i class="icono fa fa-facebook"></i
+              ><i class="icono fa fa-instagram"></i>
+            </div>
+          </div>
+          <hr class="dropdown-divider" />
+          <div class="brand-list d-flex justify-content-center flex-wrap">
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+            <div class="brand-wrapper mx-2 my-1">
+              <img src="../assets/promo.jpg" alt="imagen de marca" />
+            </div>
+          </div>
+          <p class="copyright text-center text-muted mt-3">
+            @2023 GoDjango | Powered by
+            <a class="text-muted" href="https://wa.me/message/ST66CS7X7BHZM1"
+              >Ezequiel Brito</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/app.js"></script>
+  </body>
+</html>
