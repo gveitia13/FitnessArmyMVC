@@ -66,6 +66,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=9, verbose_name='Precio', decimal_places=2, )
     info = models.TextField('Información', null=True, blank=True)
     is_active = models.BooleanField(default=True, verbose_name='Visible')
+    is_important = models.BooleanField('Destacado', default=False)
 
     # stock = models.IntegerField(verbose_name='Cantidad de inventario', default=1)
     def __str__(self):

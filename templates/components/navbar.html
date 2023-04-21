@@ -2,12 +2,12 @@
     <i class="icono fa fa-close d-sm-none d-none"></i>
     <i class="icono fa fa-bars d-sm-none"></i>
     <div class="logo">
-        <a href="/index.html"><img src="{{ cfg.logo.url }}" alt="Logo"/></a>
+        <a href="{% url 'index' %}"><img src="{{ cfg.logo.url }}" alt="Logo"/></a>
     </div>
     <ul class="navbar-nav d-flex flex-column justify-content-between ">
             <span class="d-flex flex-column flex-md-row gap-3">
-              <li><a aria-current="page" class="nav-item active" href="index.html">Home</a></li>
-              <li><a class="nav-item" href="pages/catalog.html">Catalog</a></li>
+              <li><a aria-current="page" class="nav-item active" href="{% url 'index' %}">Home</a></li>
+              <li><a class="nav-item" href="{% url 'catalog' %}">Catalog</a></li>
               <li><a class="nav-item" href="pages/contact.html">Contact</a></li>
             </span>
         <span class="nav-redes p-2 d-md-none">

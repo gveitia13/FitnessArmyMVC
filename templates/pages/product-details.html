@@ -1,0 +1,33 @@
+{% extends 'root.html' %}
+{% block content %}
+    <div class="product-screen row">
+        <div class="col-12 col-md-6 mb-3 d-flex justify-content-center align-items-start">
+            <img src="{{ object.image.url }}" alt="Imagen de producto"/>
+        </div>
+        <div class="col-12 col-md-6">
+            <h6 class="text-muted">FITNESS ARMY</h6>
+            <h1 class="fw-normal">{{ object.name }}</h1>
+            <p>$ {{ object.price|floatformat:2 }} USD</p>
+            <div>
+                <span>Cantidad</span>
+                <div class="counter-wrapper mt-1 d-flex justify-content-between align-items-center">
+                    <i onclick={restar(0)} class="icono fa fa-minus fw-lighter counter-sub"></i>
+                    <span class="fw-bold counter-num">1</span>
+                    <i onclick={sumar(0)} class="icono fa fa-plus counter-sum"></i>
+                </div>
+            </div>
+            <div class="addCart-button text-center mt-3">Añadir al carro</div>
+            <div class="properties-wrapper text text-muted mt-3">
+                <h5>Propiedades</h5>
+                <ul>
+                    {% for property in object.property_set.all %}
+                        <li>{{ property }}</li>
+                    {% endfor %}
+                </ul>
+                <p>
+                    {{ object.info }}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

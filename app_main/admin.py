@@ -31,10 +31,10 @@ class PropertyInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
-        'name', 'img_link', 'price', 'is_active')
+        'name', 'img_link', 'price', 'is_active', 'is_important')
     fieldsets = [
         ('Datos Principales:', {
-            'fields': ('name', 'price', 'is_active')
+            'fields': ('name', 'price', 'is_active', 'is_important')
         }),
         ('Descripción:', {
             'fields': ('image', 'img_link', 'info',)
