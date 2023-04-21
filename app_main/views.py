@@ -13,6 +13,7 @@ def get_global_context(request):
         'product_list': Product.objects.filter(is_active=True),
         'host': get_host_url(request),
         "domain": current_site.domain,
+        'promo_list': [i for i in range(7)]
     }
 
 

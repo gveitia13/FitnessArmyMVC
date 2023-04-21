@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'root.html' %}
+{% block content %}
+    {% include 'components/banner.html' %}
 
-</body>
-</html>
+    <span class="fs-4 my-3">Featured Products</span>
+
+    <div class="row mt-2">
+        {% for product in product_list %}
+            <div class="col-6 col-lg-3 col-md-4">
+                {% include 'components/product.html' %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,12 @@
+<div onclick={navigateToProduct()}
+     class="product-wrapper d-flex flex-column justify-content-between">
+    <div class="product-img-wrapper">
+        <img class="product-img" src="{{ product.image.url }}" alt="Imagen de producto"/>
+    </div>
+    <div>
+        <p class="product-desc">
+            {{ product.name }}
+        </p>
+        <span class="product-cost">$ {{ product.price|floatformat:2 }} USD</span>
+    </div>
+</div>

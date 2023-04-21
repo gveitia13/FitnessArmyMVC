@@ -1,0 +1,34 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" href="{{ cfg.icon.url }}"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="theme-color" content="#000000"/>
+    <meta
+            name="description"
+            content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="{{ cfg.logo.url }}"/>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'main/css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/css/font-awesome.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}"/>
+    {% block extra_head %}
+
+    {% endblock %}
+</head>
+<body>
+
+<div id="root">
+    {% block root %}
+
+    {% endblock %}
+</div>
+
+<script src="{% static 'main/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'main/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'main/js/popper.min.js' %}"></script>
+<script src="{% static 'main/js/app.js' %}"></script>
+</body>
+</html>
