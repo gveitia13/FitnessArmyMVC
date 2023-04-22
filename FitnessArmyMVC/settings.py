@@ -103,6 +103,7 @@ JAZZMIN_SETTINGS = {
         "app_main.Config": "fas fa-cog",
         # "app_main.Product": "fas fa-shopping-bag",
         "app_main.Product": "fas fa-box-open",
+        "app_main.Contact": "fas fa-envelope",
     },
     "order_with_respect_to": ['app_main'],
 }
@@ -203,3 +204,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # LOGIN_URL = reverse_lazy('login')
 #
 # AUTH_USER_MODEL = 'user.User'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'noreply.paula8@gmail.com'
+EMAIL_HOST_PASSWORD = 'ygjeeypvloptzxzp'

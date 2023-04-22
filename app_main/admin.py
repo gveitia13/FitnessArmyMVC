@@ -1,9 +1,9 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.auth.models import User, Group
 from solo.admin import SingletonModelAdmin
 
 from app_main.forms import ConfigForm, ProductForm, PropertyForm
-from app_main.models import Config, Property, Product
+from app_main.models import Config, Property, Product, Contact
 
 
 @admin.register(Config)
@@ -56,6 +56,28 @@ class ProductAdmin(admin.ModelAdmin):
         for p in queryset:
             p.is_active = True
             p.save()
+
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'phone_number', 'is_attended')
+    list_display_links = ('name',)
+    list_editable = ('is_attended',)
+    list_per_page = 20
+    fields = ('is_attended', 'name', 'email', 'phone_number', 'message')
+    readonly_fields = ('name', 'email', 'message', 'phone_number')
+    actions = ['Marcar_como_atendido', 'Marcar_como_desatendido']
+
+    def Marcar_como_atendido(self, request, queryset):
+        cnt = queryset.filter(is_attended=False).update(is_attended=True)
+        self.message_user(request, '{} Contactos marcados como atendidos.'.format(cnt), messages.SUCCESS)
+
+    def Marcar_como_desatendido(self, request, queryset):
+        cnt = queryset.filter(is_attended=True).update(is_attended=False)
+        self.message_user(request, '{} Contactos marcados como desatendidos.'.format(cnt), messages.WARNING)
+
+    def has_add_permission(self, request):
+        return False
 
 
 # admin.site.unregister(User)

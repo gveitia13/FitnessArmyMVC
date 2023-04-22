@@ -14,3 +14,60 @@
         {% include 'components/footer.html' %}
     </div>
 {% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        {% if messages %}
+            let success = '', error = '', info = '', warning = ''
+
+            {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    success += '{{ message }}\n'
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    error += '{{ message }}\n'
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                    info += '{{ message }}\n'
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    warning += '{{ message }}\n'
+                {% endif %}
+            {% endfor %}
+            if (success) {
+                swal({
+                    title: success.includes('subscrito') ? 'Subscripción hecha!'
+                        : success.includes('contact') ? 'Gracias por contactarnos!'
+                            : '',
+                    text: success,
+                    icon: "success",
+                    button: "Okay",
+                });
+            }
+            if (error) {
+                swal({
+                    title: "Error",
+                    text: error,
+                    icon: "error",
+                    button: "Okay",
+                });
+            }
+            if (info) {
+                swal({
+                    text: info,
+                    icon: "info",
+                    button: "Okay",
+                });
+            }
+            if (warning) {
+                swal({
+                    title: "Subscripción cancelada!",
+                    text: warning,
+                    icon: "warning",
+                    button: "Okay",
+                });
+            }
+        {% endif %}
+        console.log('brr')
+    </script>
+{% endblock %}

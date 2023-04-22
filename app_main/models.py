@@ -113,3 +113,18 @@ class Property(models.Model):
         verbose_name_plural = 'Propiedades'
 
     def __str__(self): return self.text
+
+
+class Contact(models.Model):
+    name = models.CharField('Nombre y apellidos', max_length=200)
+    email = models.EmailField(_("email address"))
+    message = models.TextField('Mensaje')
+    phone_number = models.CharField('Teléfono', null=True, blank=True, max_length=15,
+                                    help_text='Poner el código del país')
+    is_attended = models.BooleanField('Está atendido', default=False)
+
+    def __str__(self): return f'Contacto {self.email}'
+
+    class Meta:
+        verbose_name = 'Contacto'
+        ordering = ['is_attended']

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Subscripción</title>
+</head>
+<body>
+<h3>Has sido subscrito a nuestra empresa, a partir de ahora le avisaremos de nuestras novedades y ofertas!
+</h3>
+<a href="{{ host }}{{ domain }}">Visítenos</a>
+<br>
+<p>Para cancelar su subscripción toque el siguiente enlace:</p>
+<a href="{{ host }}{{ domain }}{% url 'unsubscribe' uidb64=uid %}">Cancelar subscripción</a>
+</body>
+</html>

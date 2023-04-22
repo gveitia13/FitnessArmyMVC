@@ -18,31 +18,32 @@ let counter_num = document.getElementsByClassName('counter-num');
 let counter_sub = document.getElementsByClassName('counter-sub');
 let counter_sum = document.getElementsByClassName('counter-sum');
 
-function navigateToProduct (){
+function navigateToProduct() {
     let url = window.location.href.split('/');
-    let currentPage = url[url.length-1];
-    if(currentPage == 'index.html'){
+    let currentPage = url[url.length - 1];
+    if (currentPage == 'index.html') {
         window.location.href = 'pages/product.html';
-    }else{
+    } else {
         window.location.href = 'product.html';
     }
 }
 
-function sumar (pos) {
+function sumar(pos) {
     let currentValue = parseInt(counter_num[pos].innerHTML);
     counter_num[pos].innerHTML = (currentValue + 1);
 };
 
-function restar (pos) {
+function restar(pos) {
     let currentValue = parseInt(counter_num[pos].innerHTML);
-    if(currentValue > 1){
+    if (currentValue > 1) {
         counter_num[pos].innerHTML = (currentValue - 1);
     }
 };
 
 if (window.screen.width > 576) {
     navbar_nav[0].className += ' nav-open';
-};
+}
+;
 
 bar_button[0].addEventListener('click', () => {
     navbar_nav[0].className += ' nav-open';
@@ -50,51 +51,55 @@ bar_button[0].addEventListener('click', () => {
     close_button[0].classList.remove('d-none');
 });
 
-close_button[0].addEventListener('click', ()=> {
+close_button[0].addEventListener('click', () => {
     close_button[0].className += ' d-none';
     bar_button[0].classList.remove('d-none');
     navbar_nav[0].classList.remove('nav-open');
 });
 
-search_button[0].addEventListener('click', ()=>{
+search_button[0].addEventListener('click', () => {
     nav_search[0].classList.remove('search-close');
 });
 
-nav_search_close[0].addEventListener('click', ()=>{
+nav_search_close[0].addEventListener('click', () => {
     nav_search[0].className += ' search-close';
 });
 
-sort_button[0].addEventListener('click', ()=>{
-    filter_wrapper[0].classList.remove('filter-close');
-});
-
-filter_close_button[0].addEventListener('click', ()=>{
-    filter_wrapper[0].className += ' filter-close';
-});
-
-availability_button[0].addEventListener('click', ()=>{
-    availability_wrapper[0].classList.remove('availability-close');
-});
-
-availability_close_button[0].addEventListener('click', ()=>{
-    availability_wrapper[0].className += ' availability-close';
-});
-
-availability_close_button[1].addEventListener('click', ()=>{
-    availability_wrapper[0].className += ' availability-close';
-});
-
-price_button[0].addEventListener('click', ()=>{
-    price_wrapper[0].classList.remove('price-close');
-});
-
-price_close_button[0].addEventListener('click', ()=>{
-    price_wrapper[0].className += ' price-close';
-});
-
-price_close_button[1].addEventListener('click', ()=>{
-    price_wrapper[0].className += ' price-close';
-});
+try {
+    sort_button[0].addEventListener('click', () => {
+        filter_wrapper[0].classList.remove('filter-close');
+    })
 
 
+    filter_close_button[0].addEventListener('click', () => {
+        filter_wrapper[0].className += ' filter-close';
+    });
+
+    availability_button[0].addEventListener('click', () => {
+        availability_wrapper[0].classList.remove('availability-close');
+    });
+
+    availability_close_button[0].addEventListener('click', () => {
+        availability_wrapper[0].className += ' availability-close';
+    });
+
+    availability_close_button[1].addEventListener('click', () => {
+        availability_wrapper[0].className += ' availability-close';
+    });
+
+    price_button[0].addEventListener('click', () => {
+        price_wrapper[0].classList.remove('price-close');
+    });
+
+    price_close_button[0].addEventListener('click', () => {
+        price_wrapper[0].className += ' price-close';
+    });
+
+    price_close_button[1].addEventListener('click', () => {
+        price_wrapper[0].className += ' price-close';
+    });
+
+} catch (e) {
+    console.log(e)
+}
 

@@ -1,0 +1,52 @@
+{% extends 'root.html' %}
+{% block content %}
+    <div class="contact-wrapper">
+        <h2 class="text-center">Contacto</h2>
+        <form class="my-5" method="post">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <div class="col-12 col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="name" name="name" required autocomplete="off"
+                               placeholder=" "/>
+                        <label for="name">Name*</label>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" required id="email" name="email" autocomplete="off"
+                               placeholder=" "/>
+                        <label for="email">Correo*</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="phone" maxlength="15" name="phone_number"
+                               autocomplete="off" placeholder=" " max="15"/>
+                        <label for="phone">Teléfono</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating">
+                        <textarea class="form-control" id="coment" name="message" required placeholder=" "
+                                  rows="3"></textarea>
+                        <label for="coment">Mensaje*</label>
+                    </div>
+                </div>
+            </div>
+            <button>Enviar</button>
+        </form>
+    </div>
+
+{% endblock %}
+{% block extra_scripts %}
+    {{ block.super }}
+    <script>
+        {% if form.erros %}
+            {% for error in form.erros %}
+                console.log('error')
+            {% endfor %}
+
+        {% endif %}
+    </script>
+{% endblock %}
