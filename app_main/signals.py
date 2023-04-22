@@ -11,7 +11,8 @@ from app_main.models import Contact, Config
 
 def async_email(instance, request):
     current_site = get_current_site(request)
-    mail = create_mail(instance.email, 'Contacto realizado', 'mails/contact.html', {
+    subject = 'Contacto realizado ' + current_site.domain
+    mail = create_mail(instance.email, subject, 'mails/contact.html', {
         'host': get_host_url(request),
         "domain": current_site.domain,
         'name': instance.name,

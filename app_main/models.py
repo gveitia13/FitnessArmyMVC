@@ -128,3 +128,13 @@ class Contact(models.Model):
     class Meta:
         verbose_name = 'Contacto'
         ordering = ['is_attended']
+
+
+class Subscriptor(models.Model):
+    email = models.EmailField(_("email address"), unique=True)
+
+    def __str__(self):
+        return f'Suscriptor {self.email}'
+
+    class Meta:
+        verbose_name_plural = 'Subscriptores'

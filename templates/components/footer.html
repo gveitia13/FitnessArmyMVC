@@ -7,11 +7,15 @@
     <div class="d-flex flex-column flex-md-row align-items-center align-items-md-end justify-content-between">
         <div>
             <span>Suscribirse con correo</span>
-            <div class="footer-email-wrapper input-group my-2">
-                <input id="email" type="email" placeholder="Correo electrónico" class="form-control"
-                       aria-describedby="email" autocomplete="off"/>
-                <span id="email"><i class="icono fa fa-arrow-right"></i></span>
-            </div>
+            <form action="{% url 'subscribe' %}" method="post">
+                <div class="footer-email-wrapper input-group my-2">
+                    <input id="email" name="email" required type="email" placeholder="Correo electrónico"
+                           class="form-control" aria-describedby="email" autocomplete="off"/>
+                    <button type="submit" class="border-0 rounded-0 bg-white" id="email"><i
+                            class="icono fa fa-arrow-right"></i></button>
+                </div>
+            </form>
+
         </div>
         <div class="footer-redes my-3 text-center">
             <a href="{{ cfg.facebook }}"><i class="icono fa fa-facebook"></i></a>

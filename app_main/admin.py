@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from solo.admin import SingletonModelAdmin
 
 from app_main.forms import ConfigForm, ProductForm, PropertyForm
-from app_main.models import Config, Property, Product, Contact
+from app_main.models import Config, Property, Product, Contact, Subscriptor
 
 
 @admin.register(Config)
@@ -77,6 +77,19 @@ class ContactAdmin(admin.ModelAdmin):
         self.message_user(request, '{} Contactos marcados como desatendidos.'.format(cnt), messages.WARNING)
 
     def has_add_permission(self, request):
+        return False
+
+
+@admin.register(Subscriptor)
+class SubscriptorAdmin(admin.ModelAdmin):
+    list_display = ('email',)
+    list_per_page = 20
+    fields = ('email',)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
         return False
 
 

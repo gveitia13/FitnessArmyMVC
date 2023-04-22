@@ -1,10 +1,16 @@
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse_lazy
+from django.shortcuts import redirect
+from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import generic
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST, require_GET
 
-from FitnessArmyMVC.utils import get_host_url
-from app_main.models import Config, Product, Contact
+from FitnessArmyMVC.utils import get_host_url, create_mail
+from app_main.models import Config, Product, Contact, Subscriptor
 
 
 def get_global_context(request):
@@ -85,27 +91,48 @@ class ContactView(generic.CreateView):
                          'Se ha enviado una notificación por correo, un administrador se pondrá en contacto con usted.')
         return super().post(request, *args, **kwargs)
 
-# @method_decorator(csrf_exempt, require_POST)
-# def create_contact(request):
-#     try:
-#         contact = Contact.objects.create(email=request.POST['email'], subject=request.POST['subject'],
-#                                          name=request.POST['name'], message=request.POST['message'])
-#         print(contact)
-#         current_site = get_current_site(request)
-#         mail = create_mail(contact.email, 'Contacto realizado', 'core/mails/contact_mail.html', {
-#             'host': get_host_url(request),
-#             "domain": current_site.domain,
-#             'name': request.POST['name'],
-#             'cfg': Config.objects.first() if Config.objects.exists() else None
-#         })
-#         mail.send()
-#         messages.success(request,
-#                          'Se ha enviado una notificación por correo, un administrador se pondrá en contacto con usted.')
-#         if Config.objects.exists():
-#             send_mail('Nuevo contacto',
-#                       f'Correo: {contact.email}\nAsunto: {contact.subject}\nNombre: {contact.name}\nMensaje: {contact.message}',
-#                       settings.EMAIL_HOST_USER, [Config.objects.first().email])
-#     except Exception as e:
-#         print(str(e))
-#         messages.error(request, 'Ha ocurrido un error en el servidor! Intente de nuevo.')
-#     return redirect(reverse('index'))
+
+@method_decorator(csrf_exempt, require_POST)
+def subscribe(request):
+    email = request.POST['email']
+    try:
+        sub = Subscriptor.objects.create(email=email)
+    except Exception as e:
+        print(str(e))
+        if str(e).__contains__('UNIQUE'):
+            messages.error(request,
+                           f'Ha ocurrido un error! El correo {email} ya se encuentra subscrito.')
+        else:
+            messages.error(request, f'Ha ocurrido un error en el servidor!')
+        return redirect(reverse('index'))
+
+    # Send confirmation email
+    current_site = get_current_site(request)
+    subject = 'Subscripción hecha ' + current_site.domain
+    mail = create_mail(email, subject, 'mails/subscripcion.html', {
+        'host': get_host_url(request),
+        "domain": current_site.domain,
+        "uid": urlsafe_base64_encode(force_bytes(email)),
+        'cfg': Config.objects.first() if Config.objects.exists() else None
+    })
+    mail.send(fail_silently=False)
+    messages.success(request,
+                     f'Has sido subscrito a Fitness Army, le mantendremos informados de nuestras novedades.')
+    return redirect(reverse('index'))
+
+
+@method_decorator(csrf_exempt, require_GET)
+def unsubscribe(request, uidb64):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        sub = Subscriptor.objects.get(email=uid)
+    except(TypeError, ValueError, OverflowError, Subscriptor.DoesNotExist):
+        sub = None
+    if sub is not None:
+        sub.delete()
+        messages.warning(request,
+                         'Su subscripción ha sido cancelada! Puede volverse a subscribir si lo considera necesario.')
+        return redirect(reverse('index'))
+    else:
+        messages.info(request, f'Usted no se encontraba subscrito en nuestra empresa.')
+        return redirect(reverse('index'))
