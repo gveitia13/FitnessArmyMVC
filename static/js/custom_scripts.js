@@ -18,70 +18,70 @@ window.addEventListener('offline', () => setOffline())*/
 
 //Auxiliary method: submit with ajax and jQuery
 function ajaxFunction(url, parameters, type, callback, async = true) {
-  $.ajax({
-    url: url,
-    type: type,
-    data: parameters,
-    dataType: 'json',
-    processData: false,
-    contentType: false,
-    async: async
-  })
-    .done(function (data) {
-      // callback(data)
-      if (!data.hasOwnProperty('error')) {
-        callback(data)
-        return false
-      } else {
-        console.log(data)
-        Swal.fire({
-          title: 'Error',
-          text: data['error'],
-          icon: 'error'
+    $.ajax({
+        url: url,
+        type: type,
+        data: parameters,
+        dataType: 'json',
+        processData: false,
+        contentType: false,
+        async: async
+    })
+        .done(function (data) {
+            // callback(data)
+            if (!data.hasOwnProperty('error')) {
+                callback(data)
+                return false
+            } else {
+                console.log(data)
+                Swal.fire({
+                    title: 'Error',
+                    text: data['error'],
+                    icon: 'error'
+                })
+            }
         })
-      }
-    })
-    .fail(function (jqXHR, textStatus, errorThrown) {
-      alert(textStatus + ': ' + errorThrown)
-    })
-    .always(function (data) {
-      console.log(data)
-    })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus + ': ' + errorThrown)
+        })
+        .always(function (data) {
+            console.log(data)
+        })
 }
 
 class EasyHTTP {
 
-  // Make an HTTP GET Request
-  async get(url) {
+    // Make an HTTP GET Request
+    async get(url) {
 
-    // Awaiting fetch response
-    const response = await fetch(url);
+        // Awaiting fetch response
+        const response = await fetch(url);
 
-    // Awaiting for response.json()
-    const resData = await response.json();
+        // Awaiting for response.json()
+        const resData = await response.json();
 
-    // Returning result data
-    return resData;
-  }
+        // Returning result data
+        return resData;
+    }
 
-  // Make an HTTP POST Request
-  async post(url, data, token) {
+    // Make an HTTP POST Request
+    async post(url, data, token) {
 
-    // Awaiting fetch response and
-    // defining method, headers and body
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-        "X-CSRFToken": token
-      },
-      body: JSON.stringify(data)
-    });
+        // Awaiting fetch response and
+        // defining method, headers and body
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                "X-CSRFToken": token
+            },
+            body: JSON.stringify(data)
+        });
 
-    // Awaiting response.json()
-    const resData = await response.json();
+        // Awaiting response.json()
+        const resData = await response.json();
 
-    // Returning result data
-    return resData;
-  }
+        // Returning result data
+        return resData;
+    }
 }

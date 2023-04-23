@@ -31,19 +31,19 @@ function navigateToProduct() {
 function sumar(pos) {
     let currentValue = parseInt(counter_num[pos].innerHTML);
     counter_num[pos].innerHTML = (currentValue + 1);
-};
+}
 
 function restar(pos) {
     let currentValue = parseInt(counter_num[pos].innerHTML);
     if (currentValue > 1) {
         counter_num[pos].innerHTML = (currentValue - 1);
     }
-};
+}
 
 if (window.screen.width > 576) {
     navbar_nav[0].className += ' nav-open';
 }
-;
+
 
 bar_button[0].addEventListener('click', () => {
     navbar_nav[0].className += ' nav-open';

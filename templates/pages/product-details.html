@@ -17,6 +17,7 @@
                 </div>
             </div>
             <div class="addCart-button text-center mt-3">Añadir al carro</div>
+            {% csrf_token %}
             <div class="properties-wrapper text text-muted mt-3">
                 <h5>Propiedades</h5>
                 <ul>
@@ -30,4 +31,28 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block extra_scripts %}
+    {{ block.super }}
+    <script>
+        document.querySelector('.addCart-button').addEventListener('click', _ => {
+            let counter = document.querySelector('.counter-num').innerText
+            console.log(counter)
+            let http = new EasyHTTP
+            http.post(`{{ host }}{{ domain }}/cart/add/{{ object.id }}/${counter}/`, {}, '{{ csrf_token }}')
+                .then(data => {
+                    console.log(data)
+                    location.replace(data.url)
+                })
+                .catch(err => {
+                    console.error(err)
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Hay un problema de conexión con el servidor.',
+                        icon: 'error'
+                    })
+                })
+        })
+    </script>
 {% endblock %}

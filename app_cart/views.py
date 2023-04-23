@@ -1,4 +1,7 @@
+from django.contrib import messages
 from django.http import HttpRequest, JsonResponse
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -69,17 +72,6 @@ def update_quant(request: HttpRequest, id: int, value: int):
     })
 
 
-# @method_decorator(csrf_exempt, require_POST)
-# def clear_current_cart(request: HttpRequest, id: int, ):
-#     cart = Cart(request)
-#     ids = request.session[settings.CART_SESSION_ID]
-#     user = GeneralData.objects.get(pk=id).user
-#     for p in Product.objects.filter(user_id=user.pk):
-#         for i in ids:
-#             if str(p.pk) == i:
-#                 cart.remove(p)
-
-
 @method_decorator(csrf_exempt, require_POST)
 def remove(request: HttpRequest, id: int):
     Cart(request).decrement(product=Product.objects.filter(id=id).first())
@@ -99,13 +91,17 @@ def cart_pop(request: HttpRequest, ):
 @method_decorator(csrf_exempt, require_POST)
 def add_quant(request: HttpRequest, id: int, quantity: int):
     cart = Cart(request)
-    cart.add(Product.objects.filter(id=id).first(), quantity)
+    product = Product.objects.filter(id=id).first()
+    cart.add(product, quantity)
     total = 0
     for item in cart.session[CART_SESSION_ID]:
-        total = total + (cart.session[CART_SESSION_ID].get(item)['product']['price'] *
-                         cart.session[CART_SESSION_ID].get(item)['quantity'])
+        total = total + (float(cart.session[CART_SESSION_ID].get(item)['product']['price']) *
+                         float(cart.session[CART_SESSION_ID].get(item)['quantity']))
+    messages.success(request, f'{product.name} fue añadido al carrito')
+    # return redirect('catalog')
     return JsonResponse({"result": "ok",
-                         'product': f'{id} {Product.objects.get(id=id).name}',
+                         'product': ProductSerializer(product).data,
                          "amount": cart.session[CART_SESSION_ID].get(id, {"quantity": quantity})["quantity"],
-                         "total": total
+                         "total": total,
+                         'url': reverse_lazy('catalog')
                          })
