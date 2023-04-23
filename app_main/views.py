@@ -1,3 +1,5 @@
+import json
+
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import redirect
@@ -12,18 +14,27 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from FitnessArmyMVC.utils import get_host_url, create_mail
+from app_cart.cart import Cart
 from app_main.models import Config, Product, Contact, Subscriptor
 from app_main.serializers import ProductSerializer
 
 
 def get_global_context(request):
     current_site = get_current_site(request)
+    cart = Cart(request)
+    print(json.dumps(cart.all(), indent=2))
+    total = 0
+    for item in cart.all():
+        total = total + (float(item['product']['price']) * float(item['quantity']))
+    print(total)
     return {
         'cfg': Config.objects.first() if Config.objects.exists() else None,
         'product_list': Product.objects.filter(is_active=True),
         'host': get_host_url(request),
         "domain": current_site.domain,
-        'promo_list': [i for i in range(7)]
+        'product_in_cart': cart.all(),
+        'product_in_cart_json': json.dumps(cart.all()),
+        'total': total,
     }
 
 
@@ -93,6 +104,18 @@ class ContactView(generic.CreateView):
         messages.success(request,
                          'Se ha enviado una notificación por correo, un administrador se pondrá en contacto con usted.')
         return super().post(request, *args, **kwargs)
+
+
+class CartView(generic.TemplateView):
+    template_name = 'pages/cart.html'
+
+    def get_context_data(self, **kwargs):
+        context = get_global_context(self.request)
+        context.update(super().get_context_data())
+        context['title'] = 'Fitness Army | Carrito de compras'
+        context['current_url'] = reverse_lazy('index')
+        context['carrito'] = True
+        return context
 
 
 @method_decorator(csrf_exempt, require_POST)

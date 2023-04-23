@@ -34,7 +34,7 @@ class Cart(object):
                 'user_id': self.request.user.id,
                 # 'product': product.toJSON(),
                 'product': serializer.data,
-                'quantity': quantity
+                'quantity': quantity,
             }
             print(self.cart[str(product.id)])
         else:
