@@ -2,6 +2,7 @@ import json
 
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
@@ -15,7 +16,7 @@ from rest_framework.response import Response
 
 from FitnessArmyMVC.utils import get_host_url, create_mail
 from app_cart.cart import Cart
-from app_main.models import Config, Product, Contact, Subscriptor
+from app_main.models import Config, Product, Contact, Subscriptor, Orden, ComponenteOrden
 from app_main.serializers import ProductSerializer
 
 
@@ -117,6 +118,21 @@ class CartView(generic.TemplateView):
         context['carrito'] = True
         return context
 
+    @method_decorator(csrf_exempt, require_POST)
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            orden = create_order(request, **{})
+            if orden:
+                mensaje = create_message_order(request, orden)
+                # Sacar alert
+                messages.success(request,
+                                 'Su orden de compra ha sido realizada, se ha enviado un correo con los detalles')
+                import threading
+                thread = threading.Thread(target=send_email_order, args=(request, orden, mensaje))
+                thread.start()
+                return redirect('index')
+        return redirect('index')
+
 
 @method_decorator(csrf_exempt, require_POST)
 def subscribe(request):
@@ -169,3 +185,72 @@ def product_list_api(request):
     product_list = Product.objects.filter(is_active=True)
     serializer = ProductSerializer(product_list, many=True)
     return Response(serializer.data, status=200)
+
+
+def create_order(request: HttpRequest, **kwargs):
+    # Datos del formulario
+    name = request.POST.get('name')
+    phone_number = request.POST.get('phone_number', None)
+    email = request.POST.get('email')
+    address = request.POST.get('address')
+    # Calcular total
+    cart = Cart(request)
+    total = 0
+    if cart.all():
+        for c in cart.all():
+            total += float(c['product']['price']) * float(c['quantity'])
+        orden = Orden.objects.create(total=float(total), status='1', name=name, phone_number=phone_number,
+                                     address=address, email=email)
+        for c in cart.all():
+            prod = Product.objects.get(pk=c['id'])
+            ComponenteOrden.objects.create(orden=orden, producto=prod,
+                                           respaldo=float(c['product']['price'] * c['quantity']),
+                                           cantidad=int(c['quantity']))
+            # Aki se rebaja
+            prod.sales += int(c['quantity'])
+            prod.save()
+        request.session['last_order'] = str(orden.uuid)
+        # Limpiar cart
+        Cart(request).clear()
+        return orden
+    return None
+
+
+def create_message_order(request: HttpRequest, orden: Orden):
+    mensaje = 'Orden de compra:\n'
+    mensaje += 'Ticket: ' + f'{str(orden.uuid)}\n'
+    mensaje += 'Nombre: ' + orden.name + '\n'
+    mensaje += 'Teléfono: ' + orden.phone_number + '\n'
+    mensaje += 'Precio total: ' + '{:.2f}'.format(orden.total) + '\n'
+    mensaje += 'Productos comprados: \n'
+    for c in orden.componente_orden.all():
+        mensaje += str(c) + '\n'
+    mensaje += '\nDatos de entrega:\n'
+    mensaje += f'Dirección: {orden.address}.\n'
+    return mensaje
+
+
+def cancel_order(request, *args, **kwargs):
+    orden = Orden.objects.get(pk=kwargs.get('pk'))
+    orden.status = '3'
+    orden.save()
+    for c in orden.componente_orden.all():
+        if c.producto:
+            prod = c.producto
+            prod.sales -= c.cantidad
+            prod.save()
+    return redirect('index')
+
+
+def send_email_order(request, orden: Orden, mensaje: str):
+    current_site = get_current_site(request)
+    subject = 'Compra realizada ' + current_site.domain
+    mail = create_mail(orden.email, subject, 'mails/contact.html', {
+        'host': get_host_url(request),
+        "domain": current_site.domain,
+        # 'mensaje': mensaje.replace(" <br/> ", "\n"),
+        'mensaje': mensaje.replace("\n", "<br>"),
+        'cfg': Config.objects.first() if Config.objects.exists() else None
+    })
+    mail.send()
+    print('Se envió un correo de orden')

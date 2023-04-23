@@ -1,10 +1,11 @@
 from ckeditor.fields import RichTextField
 from django.db import models
 from django.forms import model_to_dict
+from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from solo.models import SingletonModel
-
+import uuid
 from FitnessArmyMVC.settings import STATIC_URL
 
 
@@ -67,8 +68,8 @@ class Product(models.Model):
     info = models.TextField('Información', null=True, blank=True)
     is_active = models.BooleanField(default=True, verbose_name='Visible')
     is_important = models.BooleanField('Destacado', default=False)
+    sales = models.PositiveIntegerField(verbose_name='Ventas', default=0)
 
-    # stock = models.IntegerField(verbose_name='Cantidad de inventario', default=1)
     def __str__(self):
         return self.name
 
@@ -138,3 +139,77 @@ class Subscriptor(models.Model):
 
     class Meta:
         verbose_name_plural = 'Subscriptores'
+
+
+class Orden(models.Model):
+    link_de_pago = models.CharField(max_length=500, null=True, blank=True)
+    total = models.FloatField(default=0, verbose_name='Importe total')
+    uuid = models.UUIDField(verbose_name='ID', primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.CharField('Estado', choices=(
+        ('1', 'Completada'),
+        ('2', 'Pendiente'),
+        ('3', 'Cancelada'),
+    ), max_length=10, default='2')
+    date_created = models.DateTimeField('Fecha', auto_now_add=True, )
+    # Campos del form
+    name = models.CharField('Nombre', max_length=200)
+    phone_number = models.CharField('Teléfono', max_length=200, null=True, blank=True)
+    email = models.EmailField('Correo')
+    address = models.CharField('Dirección', max_length=900)
+
+    def __str__(self):
+        return '{}'.format(str(self.uuid))
+
+    def get_total(self):
+        return '{:.2f}'.format(self.total)
+
+    def get_componente(self):
+        return mark_safe(''.join(['•' + i.__str__() + '<br>' for i in self.componente_orden.all()]))
+
+    def get_cancel_link(self):
+        if self.status != '3':
+            return mark_safe(
+                f'<a href="{reverse_lazy("cancelar", kwargs={"pk": self.pk})}" class="btn btn-danger rounded-pill '
+                f'">Cancelar<a/>')
+        else:
+            return ''
+
+    get_total.short_description = 'Importe total'
+    get_cancel_link.short_description = 'Opciones'
+    get_componente.short_description = 'Componentes'
+
+    class Meta:
+        verbose_name = 'Orden'
+        verbose_name_plural = 'Ordenes'
+        ordering = ('-date_created', '-status',)
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['date_created'] = self.date_created.strftime('%d-%m-%Y')
+        item['uuid'] = str(self.uuid)
+        item['componentes'] = [i.toJSON() for i in self.componente_orden.all()]
+        return item
+
+
+class ComponenteOrden(models.Model):
+    producto = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True,
+                                 related_name='componente_producto')
+    respaldo = models.FloatField()
+    orden = models.ForeignKey(Orden, on_delete=models.CASCADE, related_name='componente_orden')
+    cantidad = models.IntegerField()
+
+    def __str__(self):
+        return '{}x {} - {}'.format(self.cantidad, self.producto.name if self.producto else "ERROR",
+                                    '{:.2f}'.format(self.respaldo), )
+
+    def Componente(self):
+        return str(self)
+
+    def toJSON(self):
+        item = model_to_dict(self, exclude=['orden'])
+        return item
+
+    class Meta:
+        ordering = ('orden', 'producto')
+        verbose_name = 'Componente de orden'
+        verbose_name_plural = 'Componentes de órdenes'
