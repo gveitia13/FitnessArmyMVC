@@ -179,8 +179,8 @@ class Orden(models.Model):
     get_componente.short_description = 'Componentes'
 
     class Meta:
-        verbose_name = 'Orden'
-        verbose_name_plural = 'Ordenes'
+        verbose_name = 'Venta'
+        verbose_name_plural = 'Ventas'
         ordering = ('-date_created', '-status',)
 
     def toJSON(self):
@@ -211,5 +211,5 @@ class ComponenteOrden(models.Model):
 
     class Meta:
         ordering = ('orden', 'producto')
-        verbose_name = 'Componente de orden'
-        verbose_name_plural = 'Componentes de órdenes'
+        verbose_name = 'Componente de venta'
+        verbose_name_plural = 'Componentes de ventas'

@@ -105,8 +105,13 @@ JAZZMIN_SETTINGS = {
         # "app_main.Product": "fas fa-shopping-bag",
         "app_main.Product": "fas fa-box-open",
         "app_main.Contact": "fas fa-envelope",
+        "app_main.Subscriptor": "fas fa-user-plus",
+        "app_main.Orden": "fas fa-chart-line",
+        "app_main.ComponenteOrden": "fas fa-shopping-bag",
+        "app_main.Offer": "fas fa-envelope-open-text",
     },
-    "order_with_respect_to": ['app_main'],
+    "order_with_respect_to": ['app_main', 'app_main.config', 'app_main.product', 'app_main.orden',
+                              'app_main.componenteorden', 'app_main.offer', 'app_main.contact', 'app_main.subscriptor'],
 }
 
 MIDDLEWARE = [
@@ -213,6 +218,5 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'noreply.paula8@gmail.com'
 EMAIL_HOST_PASSWORD = 'ygjeeypvloptzxzp'
-
 
 CART_SESSION_ID = "cart"
