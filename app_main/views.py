@@ -204,7 +204,7 @@ def create_order(request: HttpRequest, **kwargs):
         for c in cart.all():
             prod = Product.objects.get(pk=c['id'])
             ComponenteOrden.objects.create(orden=orden, producto=prod,
-                                           respaldo=float(c['product']['price'] * c['quantity']),
+                                           respaldo=float(c['product']['price']) * float(c['quantity']),
                                            cantidad=int(c['quantity']))
             # Aki se rebaja
             prod.sales += int(c['quantity'])
@@ -221,10 +221,10 @@ def create_message_order(request: HttpRequest, orden: Orden):
     mensaje += 'Ticket: ' + f'{str(orden.uuid)}\n'
     mensaje += 'Nombre: ' + orden.name + '\n'
     mensaje += 'Teléfono: ' + orden.phone_number + '\n'
-    mensaje += 'Precio total: ' + '{:.2f}'.format(orden.total) + '\n'
-    mensaje += 'Productos comprados: \n'
+    mensaje += '\nProductos comprados: \n'
     for c in orden.componente_orden.all():
         mensaje += str(c) + '\n'
+    mensaje += 'Precio total: ' + '{:.2f}'.format(orden.total) + '\n'
     mensaje += '\nDatos de entrega:\n'
     mensaje += f'Dirección: {orden.address}.\n'
     return mensaje
@@ -245,7 +245,7 @@ def cancel_order(request, *args, **kwargs):
 def send_email_order(request, orden: Orden, mensaje: str):
     current_site = get_current_site(request)
     subject = 'Compra realizada ' + current_site.domain
-    mail = create_mail(orden.email, subject, 'mails/contact.html', {
+    mail = create_mail(orden.email, subject, 'mails/orden.html', {
         'host': get_host_url(request),
         "domain": current_site.domain,
         # 'mensaje': mensaje.replace(" <br/> ", "\n"),

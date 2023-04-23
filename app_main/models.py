@@ -147,7 +147,7 @@ class Orden(models.Model):
     uuid = models.UUIDField(verbose_name='ID', primary_key=True, default=uuid.uuid4, editable=False)
     status = models.CharField('Estado', choices=(
         ('1', 'Completada'),
-        ('2', 'Pendiente'),
+        # ('2', 'Pendiente'),
         ('3', 'Cancelada'),
     ), max_length=10, default='2')
     date_created = models.DateTimeField('Fecha', auto_now_add=True, )

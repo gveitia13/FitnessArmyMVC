@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from solo.admin import SingletonModelAdmin
 
 from app_main.forms import ConfigForm, ProductForm, PropertyForm
-from app_main.models import Config, Property, Product, Contact, Subscriptor
+from app_main.models import Config, Property, Product, Contact, Subscriptor, ComponenteOrden, Orden
 
 
 @admin.register(Config)
@@ -31,7 +31,7 @@ class PropertyInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
-        'name', 'img_link', 'price', 'is_active', 'is_important')
+        'name', 'img_link', 'price', 'sales', 'is_active', 'is_important')
     fieldsets = [
         ('Datos Principales:', {
             'fields': ('name', 'price', 'is_active', 'is_important')
@@ -93,5 +93,41 @@ class SubscriptorAdmin(admin.ModelAdmin):
         return False
 
 
+class ComponenteOrdenInline(admin.StackedInline):
+    model = ComponenteOrden
+    extra = 0
+
+
+class OrdenAdmin(admin.ModelAdmin):
+    list_display = ('status', 'uuid', 'date_created', 'get_componente', 'get_total', 'email',)
+    list_display_links = ('status', 'uuid')
+    list_filter = ('status',)
+    search_fields = ('uuid',)
+    actions = ['Cancelar_Orden']
+    list_per_page = 10
+    # inlines = [ComponenteOrdenInline]
+    readonly_fields = ['get_componente', 'total', 'name', 'email', 'phone_number', 'address']
+    exclude = ['link_de_pago']
+
+    def Cancelar_Orden(self, request, queryset):
+        for o in queryset:
+            if o.status != '3':
+                o.status = '3'
+                o.save()
+                for c in o.componente_orden.all():
+                    if c.producto:
+                        prod = c.producto
+                        prod.sales -= c.cantidad
+                        prod.save()
+
+
+class ComponenteOrdenAdmin(admin.ModelAdmin):
+    list_display = ('orden', 'Componente')
+    list_filter = ('producto',)
+    search_fields = ('orden', 'producto')
+
+
+admin.site.register(Orden, OrdenAdmin)
+admin.site.register(ComponenteOrden, ComponenteOrdenAdmin)
 # admin.site.unregister(User)
 admin.site.unregister(Group)

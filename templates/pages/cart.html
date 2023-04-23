@@ -50,28 +50,33 @@
     </div>
 
     <form class="my-5 pay-wrapper" method="post">
+        {% csrf_token %}
         <div class="row mb-3">
             <div class="col-12 col-md-6">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" required id="name" autocomplete="off" placeholder=" "/>
+                    <input type="text" class="form-control" required id="name" name="name" autocomplete="off"
+                           placeholder=" "/>
                     <label for="name">Nombre</label>
                 </div>
             </div>
             <div class="col-12 col-md-6">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" required id="adress" autocomplete="off" placeholder=" "/>
+                    <input type="text" class="form-control" required id="adress" name="address" autocomplete="off"
+                           placeholder=" "/>
                     <label for="adress">Dirección</label>
                 </div>
             </div>
             <div class="col-12 col-md-6">
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" required id="email" autocomplete="off" placeholder=" "/>
+                    <input type="email" class="form-control" required id="email" name="email" autocomplete="off"
+                           placeholder=" "/>
                     <label for="email">Correo electrónico</label>
                 </div>
             </div>
             <div class="col-12 col-md-6">
                 <div class="form-floating mb-3">
-                    <input type="tel" class="form-control" id="phone" autocomplete="off" placeholder=" "/>
+                    <input type="tel" class="form-control" id="phone" name="phone_number" autocomplete="off"
+                           placeholder=" "/>
                     <label for="phone">Teléfono (Opcional)</label>
                 </div>
             </div>

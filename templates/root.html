@@ -38,7 +38,8 @@
                 swal({
                     title: success.includes('subscrito') ? 'Subscripción hecha!'
                         : success.includes('contact') ? 'Gracias por contactarnos!'
-                            : '',
+                            : success.includes('orden') ? 'Compra realizada!'
+                                : '',
                     text: success,
                     icon: "success",
                     button: "Okay",

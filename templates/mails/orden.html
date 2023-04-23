@@ -6,7 +6,7 @@
 </head>
 <body>
 <h3>Gracias por comprar en {{ cfg.name }}</h3>
-<p>{{ mensaje }}</p>
+<p>{{ mensaje|safe }}</p>
 <a href="{{ host }}{{ domain }}">Visítenos</a>
 
 </body>
