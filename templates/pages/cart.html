@@ -86,7 +86,7 @@
         function eliminar(id, name) {
             swal({
                 title: 'Eliminar',
-                text: `Desea quitar ${name} del carrito?`,
+                text: `Desea quitar "${name}" del carrito?`,
                 icon: "warning",
                 dangerMode: true,
                 buttons: ["Cancelar", true],
@@ -110,5 +110,6 @@
                     }
                 })
         }
+
     </script>
 {% endblock %}
