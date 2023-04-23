@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'django_cleanup.apps.CleanupConfig',
     'app_main',
+    'app_cart',
 ]
 
 CKEDITOR_CONFIGS = {
@@ -212,3 +213,6 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'noreply.paula8@gmail.com'
 EMAIL_HOST_PASSWORD = 'ygjeeypvloptzxzp'
+
+
+CART_SESSION_ID = "cart"

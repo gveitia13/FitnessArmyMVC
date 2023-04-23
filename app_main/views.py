@@ -8,9 +8,12 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_GET
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from FitnessArmyMVC.utils import get_host_url, create_mail
 from app_main.models import Config, Product, Contact, Subscriptor
+from app_main.serializers import ProductSerializer
 
 
 def get_global_context(request):
@@ -136,3 +139,10 @@ def unsubscribe(request, uidb64):
     else:
         messages.info(request, f'Usted no se encontraba subscrito en nuestra empresa.')
         return redirect(reverse('index'))
+
+
+@api_view()
+def product_list_api(request):
+    product_list = Product.objects.filter(is_active=True)
+    serializer = ProductSerializer(product_list, many=True)
+    return Response(serializer.data, status=200)
