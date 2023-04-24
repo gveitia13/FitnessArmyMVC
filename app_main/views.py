@@ -83,7 +83,7 @@ class CatalogView(generic.ListView):
         context['title'] = 'Fitness Army | Catálogo'
         context['current_url'] = reverse_lazy('index')
         context['catalog'] = True
-        context['high_price'] = Product.objects.filter(is_active=True).order_by('price')[0].price
+        context['high_price'] = Product.objects.filter(is_active=True).order_by('-price')[0].price
         return context
 
 
