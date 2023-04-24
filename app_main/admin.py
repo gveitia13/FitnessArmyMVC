@@ -1,9 +1,11 @@
+import threading
+
 from django.contrib import admin, messages
 from django.contrib.auth.models import User, Group
 from solo.admin import SingletonModelAdmin
 
 from app_main.forms import ConfigForm, ProductForm, PropertyForm
-from app_main.models import Config, Property, Product, Contact, Subscriptor, ComponenteOrden, Orden
+from app_main.models import Config, Property, Product, Contact, Subscriptor, ComponenteOrden, Orden, Offer
 
 
 @admin.register(Config)
@@ -129,6 +131,27 @@ class ComponenteOrdenAdmin(admin.ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return False
+
+
+def async_send_offer_mail(queryset):
+    for i in queryset:
+        i.send_offer_mail()
+
+
+@admin.register(Offer)
+class OfferAdmin(admin.ModelAdmin):
+    list_display = ('get_status', 'subject', 'message', 'date_created')
+    exclude = ['date_created', 'status']
+    readonly_fields = ['get_status']
+    actions = ['Enviar_Ofertas']
+
+    def Enviar_Ofertas(self, request, queryset):
+        thread = threading.Thread(target=async_send_offer_mail, args=(queryset,))
+        thread.start()
+        for i in queryset:
+            i.status = '1'
+            i.save()
+        self.message_user(request, '{} Ofertas enviadas.'.format(queryset.count()), messages.SUCCESS)
 
 
 admin.site.register(Orden, OrdenAdmin)

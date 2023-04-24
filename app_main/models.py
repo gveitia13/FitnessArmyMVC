@@ -1,4 +1,5 @@
 from ckeditor.fields import RichTextField
+from django.core.mail import send_mail
 from django.db import models
 from django.forms import model_to_dict
 from django.urls import reverse_lazy
@@ -6,7 +7,10 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from solo.models import SingletonModel
 import uuid
+
+from FitnessArmyMVC import settings
 from FitnessArmyMVC.settings import STATIC_URL
+from FitnessArmyMVC.utils import create_mail
 
 
 class Config(SingletonModel):
@@ -150,7 +154,7 @@ class Orden(models.Model):
         # ('2', 'Pendiente'),
         ('3', 'Cancelada'),
     ), max_length=10, default='2')
-    date_created = models.DateTimeField('Fecha', auto_now_add=True,)
+    date_created = models.DateTimeField('Fecha', auto_now_add=True, )
     # Campos del form
     name = models.CharField('Nombre', max_length=200)
     phone_number = models.CharField('Teléfono', max_length=200, null=True, blank=True)
@@ -219,3 +223,28 @@ class ComponenteOrden(models.Model):
         ordering = ('orden', 'producto')
         verbose_name = 'Componente de venta'
         verbose_name_plural = 'Componentes de ventas'
+
+
+class Offer(models.Model):
+    subject = models.CharField('Asunto', max_length=120)
+    message = models.TextField('Mensaje')
+    date_created = models.DateTimeField('Fecha', auto_now_add=True, )
+    status = models.CharField('Estado', choices=(
+        ('1', 'Enviada'),
+        ('2', 'No enviada'),
+    ), max_length=2, default='2')
+
+    class Meta:
+        verbose_name = 'Oferta'
+        ordering = ('status', 'date_created',)
+
+    def __str__(self): return self.subject + ' ' + str(self.date_created)
+
+    def get_status(self):
+        return mark_safe(
+            f'<span class="text-{"success" if self.status == "1" else "danger"}">{self.get_status_display()}</span>')
+
+    get_status.short_description = 'Estado'
+
+    def send_offer_mail(self):
+        send_mail(self.subject, self.message, settings.EMAIL_HOST_USER, [i.email for i in Subscriptor.objects.all()])
