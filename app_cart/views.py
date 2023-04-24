@@ -1,3 +1,5 @@
+import json
+
 from django.contrib import messages
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect
@@ -61,13 +63,25 @@ def update_quant(request: HttpRequest, id: int, value: int):
     cart.update_quant(product=product, value=value)
     total = 0
     for item in cart.session[CART_SESSION_ID]:
-        total = total + (cart.session[CART_SESSION_ID].get(item)['product']['price'] *
-                         cart.session[CART_SESSION_ID].get(item)['quantity'])
+        total = total + (float(cart.session[CART_SESSION_ID].get(item)['product']['price']) *
+                         float(cart.session[CART_SESSION_ID].get(item)['quantity']))
     return JsonResponse({
         "result": "ok",
         "total": total,
         'product': ProductSerializer(product).data,
         "amount": cart.session[CART_SESSION_ID].get(id, {"quantity": value})["quantity"],
+    })
+
+
+@method_decorator(csrf_exempt, require_POST)
+def update_cart(request: HttpRequest):
+    cart = Cart(request)
+    lista = json.loads(request.body)
+    for i in lista:
+        product = Product.objects.get(pk=i['id'])
+        cart.update_quant(product=product, value=i['cant'])
+    return JsonResponse({
+        "result": "ok",
     })
 
 

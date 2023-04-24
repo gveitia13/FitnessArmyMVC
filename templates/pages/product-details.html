@@ -47,11 +47,9 @@
                 })
                 .catch(err => {
                     console.error(err)
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Hay un problema de conexión con el servidor.',
-                        icon: 'error'
-                    })
+                    if (err)
+                        swal("Error", "Hay un problema de conexión en el servidor", "error");
+
                 })
         })
     </script>

@@ -30,7 +30,8 @@
                             align-items-center">
                                 <i onclick="{restar({{ forloop.counter0 }})}"
                                    class="icono fa fa-minus fw-lighter counter-sub"></i>
-                                <span class="fw-bold counter-num">{{ product.quantity }}</span>
+                                <span class="fw-bold counter-num"
+                                      prod_id="{{ product.id }}">{{ product.quantity }}</span>
                                 <i onclick="{sumar({{ forloop.counter0 }})}"
                                    class="icono fa fa-plus me-md-3 counter-sum"></i>
                             </div>
@@ -117,5 +118,24 @@
                 })
         }
 
+        document.querySelector('#update-cart').addEventListener('click', _ => {
+            let lista = []
+            document.querySelectorAll('.counter-num').forEach(e => {
+                lista.push({'id': e.attributes['prod_id'].value, 'cant': e.innerText})
+            })
+            let http = new EasyHTTP
+            http.post('{{ host }}{{ domain }}{% url "cart_update_cart" %}', lista, '{{ csrf_token }}')
+                .then(data => {
+                    if (data.result === 'ok')
+                        location.reload()
+                    else
+                        swal("Error", "Hay un problema de conexión en el servidor", "error");
+                })
+                .catch(err => {
+                    console.error(err)
+                    if (err)
+                        swal("Error", "Hay un problema de conexión en el servidor", "error");
+                })
+        })
     </script>
 {% endblock %}

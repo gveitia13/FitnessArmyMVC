@@ -8,6 +8,7 @@ urlpatterns = [
     path("cart/remove/<id>/", remove, name="cart_remove"),
     # actualizar cantidad
     path('cart/update_quantity/<id>/<value>/', update_quant, name='cart_update_quantity'),
+    path('cart/update_cart/', update_cart, name='cart_update_cart'),
 
     path("cart/remove/<id>/<quantity>/", remove_quant, name="cart_remove_quantity"),
     path("cart/clear/", cart_clear, name="cart_clear"),

@@ -97,7 +97,8 @@ class Cart(object):
     def update_quant(self, product, value):
         self.cart[str(product.id)]['quantity'] = int(value)
         if self.cart[str(product.id)]['quantity'] < 1:
-            return redirect('cart:cart_detail')
+            # return redirect('cart:cart_detail')
+            pass
         self.save()
 
     def clear(self):
