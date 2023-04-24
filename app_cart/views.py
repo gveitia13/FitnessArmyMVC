@@ -68,7 +68,6 @@ def update_quant(request: HttpRequest, id: int, value: int):
         "total": total,
         'product': ProductSerializer(product).data,
         "amount": cart.session[CART_SESSION_ID].get(id, {"quantity": value})["quantity"],
-        'price': f'{product.price}'
     })
 
 
