@@ -150,7 +150,7 @@ class Orden(models.Model):
         # ('2', 'Pendiente'),
         ('3', 'Cancelada'),
     ), max_length=10, default='2')
-    date_created = models.DateTimeField('Fecha', auto_now_add=True, )
+    date_created = models.DateTimeField('Fecha', auto_now_add=True,)
     # Campos del form
     name = models.CharField('Nombre', max_length=200)
     phone_number = models.CharField('Teléfono', max_length=200, null=True, blank=True)
@@ -174,9 +174,14 @@ class Orden(models.Model):
         else:
             return ''
 
+    def get_status(self):
+        return mark_safe(
+            f'<span class="text-{"success" if self.status == "1" else "danger"}">{self.get_status_display()}</span>')
+
     get_total.short_description = 'Importe total'
     get_cancel_link.short_description = 'Opciones'
     get_componente.short_description = 'Componentes'
+    get_status.short_description = 'Estado'
 
     class Meta:
         verbose_name = 'Venta'
@@ -199,8 +204,9 @@ class ComponenteOrden(models.Model):
     cantidad = models.IntegerField()
 
     def __str__(self):
-        return '{}x {} - {}'.format(self.cantidad, self.producto.name if self.producto else "ERROR",
-                                    '{:.2f}'.format(self.respaldo), )
+        return mark_safe(
+            '{}x - {} - {}'.format(self.cantidad, self.producto.name if self.producto else "Producto eliminado",
+                                   '$<b>{:.2f}</b>'.format(self.respaldo), ))
 
     def Componente(self):
         return str(self)

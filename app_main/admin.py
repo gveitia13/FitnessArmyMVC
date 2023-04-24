@@ -99,15 +99,15 @@ class ComponenteOrdenInline(admin.StackedInline):
 
 
 class OrdenAdmin(admin.ModelAdmin):
-    list_display = ('status', 'uuid', 'date_created', 'get_componente', 'get_total', 'email',)
-    list_display_links = ('status', 'uuid')
+    list_display = ('get_status', 'uuid', 'date_created', 'get_componente', 'get_total', 'email',)
+    list_display_links = ('get_status', 'uuid')
     list_filter = ('status',)
     search_fields = ('uuid',)
     actions = ['Cancelar_Orden']
     list_per_page = 10
     # inlines = [ComponenteOrdenInline]
-    readonly_fields = ['get_componente', 'total', 'name', 'email', 'phone_number', 'address']
-    exclude = ['link_de_pago']
+    readonly_fields = ['get_status', 'get_componente', 'total', 'name', 'email', 'phone_number', 'address', ]
+    exclude = ['link_de_pago', 'status']
 
     def Cancelar_Orden(self, request, queryset):
         for o in queryset:
@@ -125,6 +125,10 @@ class ComponenteOrdenAdmin(admin.ModelAdmin):
     list_display = ('orden', 'Componente')
     list_filter = ('producto',)
     search_fields = ('orden', 'producto')
+    list_per_page = 20
+
+    def has_change_permission(self, request, obj=None):
+        return False
 
 
 admin.site.register(Orden, OrdenAdmin)
