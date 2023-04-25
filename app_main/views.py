@@ -36,7 +36,64 @@ def get_global_context(request):
         'product_in_cart': cart.all(),
         'product_in_cart_json': json.dumps(cart.all()),
         'total': total,
+        'search': request.session['search'] if 'search' in request.session else ''
     }
+
+
+def get_qs(self, qs):
+    qs = qs.filter(is_active=True)
+    print(self.request.GET)
+
+    if self.request.GET.get('mas-vendidos'):
+        if self.request.session['search'] != '':
+            qs = qs.filter(name__icontains=self.request.session['search'])
+        # if self.request.session['category'] != -1:
+        #     qs = qs.filter(category_id=self.request.session['category'])
+        # if self.request.session['filter_localization'] != -1:
+        #     loca = Localization.objects.get(pk=self.request.session['filter_localization'])
+        #     gnds = GeneralData.objects.filter(localization_id=loca.pk)
+        #     users = [g.user for g in gnds]
+        #     qs = qs.filter(user__in=users)
+        # qs = qs.order_by('-sales')
+        # self.request.session['filtro_activo'] = 1
+        return qs
+
+    # if self.request.GET.get('mas-vistos'):
+    #     if self.request.session['search'] != '':
+    #         qs = qs.filter(name__icontains=self.request.session['search'])
+    #     if self.request.session['category'] != -1:
+    #         qs = qs.filter(category_id=self.request.session['category'])
+    #     if self.request.session['filter_localization'] != -1:
+    #         loca = Localization.objects.get(pk=self.request.session['filter_localization'])
+    #         gnds = GeneralData.objects.filter(localization_id=loca.pk)
+    #         users = [g.user for g in gnds]
+    #         qs = qs.filter(user__in=users)
+    #     qs = qs.order_by('-views')
+    #     self.request.session['filtro_activo'] = 2
+    #     return qs
+
+    self.request.session['search'] = ''
+    # self.request.session['category'] = -1
+    # self.request.session['filter_localization'] = -1
+    self.request.session['filtro_activo'] = -1
+
+    if self.request.GET.get('search'):
+        qs = qs.filter(name__icontains=self.request.GET.get('search'))
+        self.request.session['search'] = self.request.GET.get('search')
+
+    # if self.request.GET.get('selectNavbar') and self.request.GET.get('selectNavbar') != '0':
+    #     cat = Category.objects.get(pk=self.request.GET.get('selectNavbar'))
+    #     self.request.session['category'] = self.request.GET.get('selectNavbar')
+    #     qs = qs.filter(name__icontains=self.request.GET.get('search'), category=cat)
+    #
+    # if self.request.GET.get('localization') and self.request.GET.get('localization') != '0':
+    #     loca = Localization.objects.get(pk=self.request.GET.get('localization'))
+    #     self.request.session['filter_localization'] = loca.pk
+    #     gnds = GeneralData.objects.filter(localization_id=loca.pk)
+    #     users = [g.user for g in gnds]
+    #     qs = qs.filter(user__in=users)
+
+    return qs
 
 
 class IndexView(generic.ListView):
@@ -45,6 +102,11 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
+        if self.request.GET.get('search'):
+            qs = qs.filter(name__icontains=self.request.GET.get('search'))
+            self.request.session['search'] = self.request.GET.get('search')
+        else:
+            self.request.session['search'] = ''
         return qs.filter(is_important=True, is_active=True)
 
     def get_context_data(self, **kwargs):
@@ -75,6 +137,11 @@ class CatalogView(generic.ListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
+        if self.request.GET.get('search'):
+            qs = qs.filter(name__icontains=self.request.GET.get('search'))
+            self.request.session['search'] = self.request.GET.get('search')
+        else:
+            self.request.session['search'] = ''
         return qs.filter(is_active=True)
 
     def get_context_data(self, *, object_list=None, **kwargs):
