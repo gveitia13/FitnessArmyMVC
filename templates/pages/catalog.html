@@ -33,11 +33,13 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-baseline text-muted my-4">
                     <span class="flex-grow-1">Ordenar por:</span>
-                    <select class="form-select small" aria-label="Default select example">
-                        <option value="0">Alfabéticamente, A-Z</option>
-                        <option value="1">Alfabéticamente, Z-A</option>
-                        <option value="2">Menor precio</option>
-                        <option value="3">Mayor precio</option>
+                    <select class="form-select small filter-order" aria-label="Default select example">
+                        <option {% if ordering == 'name' %} selected {% endif %} value="name">Alfabéticamente, A-Z
+                        </option>
+                        <option {% if ordering == '-name' %} selected {% endif %} value="-name">Alfabéticamente, Z-A
+                        </option>
+                        <option {% if ordering == 'price' %} selected {% endif %} value="price">Menor precio</option>
+                        <option {% if ordering == '-price' %} selected {% endif %} value="-price">Mayor precio</option>
                     </select>
                 </div>
             </div>
@@ -49,6 +51,7 @@
                 </div>
             </div>
         </div>
+
         <div class="availability-wrapper d-flex flex-column justify-content-between availability-close">
             <div>
                 <hr class="dropdown-divider"/>
@@ -80,6 +83,7 @@
                 </div>
             </div>
         </div>
+
         <div class="price-wrapper d-flex flex-column justify-content-between price-close">
             <div>
                 <hr class="dropdown-divider"/>
@@ -98,13 +102,15 @@
                 <div class="row g-2">
                     <div class="col-6">
                         <div class="form-floating">
-                            <input type="number" class="form-control" id="price-from"/>
+                            <input type="number" class="form-control input-price" id="price-from" min="0"
+                                   max="{{ high_price }}" value="{{ price_from }}"/>
                             <label for="price-from">Desde</label>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-floating">
-                            <input type="number" class="form-control" id="price-to"/>
+                            <input type="number" class="form-control input-price" id="price-to" max="{{ high_price }}"
+                                   min="0" value="{{ price_to }}"/>
                             <label for="price-to">hasta</label>
                         </div>
                     </div>
@@ -120,4 +126,41 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block extra_scripts %}
+    {{ block.super }}
+    <script>
+        document.querySelector('.price-wrapper .filter-remove-button').addEventListener('click', _ => {
+            document.querySelector('#price-to').value = ''
+            document.querySelector('#price-from').value = ''
+        })
+        document.querySelectorAll('.input-price').forEach(e => e.addEventListener('change', function () {
+            if (parseInt(this.value) > parseInt('{{ high_price }}'))
+                this.value = '{{ high_price }}'
+            if (parseInt(this.value) < 0)
+                this.value = 0
+        }))
+        document.querySelector('.filter-wrapper .filter-remove-button').addEventListener('click', _ => {
+            document.querySelector('#price-to').value = ''
+            document.querySelector('#price-from').value = ''
+            document.querySelector('.filter-order').value = 'name'
+        })
+        document.querySelector('#form-search').addEventListener('submit', function (e) {
+            e.preventDefault()
+            let input_search = document.querySelector('#search-input').value,
+                price_to = document.querySelector('#price-to').value,
+                price_from = document.querySelector('#price-from').value,
+                ordering = document.querySelector('.filter-order').value,
+                url = '{{ host }}{{ domain }}{% url 'catalog' %}?search='
+            if (input_search)
+                url += `${input_search.replace(' ', '+')}`
+            if (price_to)
+                url += `&price_to=${price_to}`
+            if (price_from)
+                url += `&price_from=${price_from}`
+            url += `&ordering=${ordering}`
+            location.replace(url)
+        })
+    </script>
 {% endblock %}

@@ -41,62 +41,6 @@ def get_global_context(request):
     }
 
 
-def get_qs(self, qs):
-    qs = qs.filter(is_active=True)
-    print(self.request.GET)
-
-    if self.request.GET.get('mas-vendidos'):
-        if self.request.session['search'] != '':
-            qs = qs.filter(name__icontains=self.request.session['search'])
-        # if self.request.session['category'] != -1:
-        #     qs = qs.filter(category_id=self.request.session['category'])
-        # if self.request.session['filter_localization'] != -1:
-        #     loca = Localization.objects.get(pk=self.request.session['filter_localization'])
-        #     gnds = GeneralData.objects.filter(localization_id=loca.pk)
-        #     users = [g.user for g in gnds]
-        #     qs = qs.filter(user__in=users)
-        # qs = qs.order_by('-sales')
-        # self.request.session['filtro_activo'] = 1
-        return qs
-
-    # if self.request.GET.get('mas-vistos'):
-    #     if self.request.session['search'] != '':
-    #         qs = qs.filter(name__icontains=self.request.session['search'])
-    #     if self.request.session['category'] != -1:
-    #         qs = qs.filter(category_id=self.request.session['category'])
-    #     if self.request.session['filter_localization'] != -1:
-    #         loca = Localization.objects.get(pk=self.request.session['filter_localization'])
-    #         gnds = GeneralData.objects.filter(localization_id=loca.pk)
-    #         users = [g.user for g in gnds]
-    #         qs = qs.filter(user__in=users)
-    #     qs = qs.order_by('-views')
-    #     self.request.session['filtro_activo'] = 2
-    #     return qs
-
-    self.request.session['search'] = ''
-    # self.request.session['category'] = -1
-    # self.request.session['filter_localization'] = -1
-    self.request.session['filtro_activo'] = -1
-
-    if self.request.GET.get('search'):
-        qs = qs.filter(name__icontains=self.request.GET.get('search'))
-        self.request.session['search'] = self.request.GET.get('search')
-
-    # if self.request.GET.get('selectNavbar') and self.request.GET.get('selectNavbar') != '0':
-    #     cat = Category.objects.get(pk=self.request.GET.get('selectNavbar'))
-    #     self.request.session['category'] = self.request.GET.get('selectNavbar')
-    #     qs = qs.filter(name__icontains=self.request.GET.get('search'), category=cat)
-    #
-    # if self.request.GET.get('localization') and self.request.GET.get('localization') != '0':
-    #     loca = Localization.objects.get(pk=self.request.GET.get('localization'))
-    #     self.request.session['filter_localization'] = loca.pk
-    #     gnds = GeneralData.objects.filter(localization_id=loca.pk)
-    #     users = [g.user for g in gnds]
-    #     qs = qs.filter(user__in=users)
-
-    return qs
-
-
 class IndexView(generic.ListView):
     template_name = 'pages/start.html'
     model = Product
@@ -126,13 +70,9 @@ class ProductDetailsView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         prod: Product = self.get_object(self.queryset)
-        image = open(prod.image.path, 'rb')
         name, ext = splitext(prod.image.name)
         index = name.rfind('/')
         name2 = name[index + 1:]
-        print(name)
-        print(name2)
-        print(ext)
         context['title'] = f'Fitness Army | {prod.name}'
         context['current_url'] = reverse_lazy('index')
         context.update(get_global_context(self.request))
@@ -150,6 +90,25 @@ class CatalogView(generic.ListView):
             self.request.session['search'] = self.request.GET.get('search')
         else:
             self.request.session['search'] = ''
+
+        if self.request.GET.get('ordering'):
+            qs = qs.order_by(self.request.GET.get('ordering'))
+            self.request.session['ordering'] = self.request.GET.get('ordering')
+        else:
+            self.request.session['ordering'] = 'name'
+
+        if self.request.GET.get('price_from'):
+            qs = qs.filter(price__gte=self.request.GET.get('price_from'))
+            self.request.session['price_from'] = self.request.GET.get('price_from')
+        else:
+            self.request.session['price_from'] = ''
+
+        if self.request.GET.get('price_to'):
+            qs = qs.filter(price__lte=self.request.GET.get('price_to'))
+            self.request.session['price_to'] = self.request.GET.get('price_to')
+        else:
+            self.request.session['price_to'] = ''
+
         return qs.filter(is_active=True)
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -159,7 +118,11 @@ class CatalogView(generic.ListView):
         context['current_url'] = reverse_lazy('index')
         context['catalog'] = True
         products = self.get_queryset()
-        context['high_price'] = products.order_by('-price')[0].price
+        context['high_price'] = int(
+            Product.objects.filter(is_active=True).order_by('-price')[0].price)
+        context['ordering'] = self.request.session['ordering'] if 'ordering' in self.request.session else 'name'
+        context['price_from'] = self.request.session['price_from'] if 'price_from' in self.request.session else ''
+        context['price_to'] = self.request.session['price_to'] if 'price_to' in self.request.session else ''
         return context
 
 
