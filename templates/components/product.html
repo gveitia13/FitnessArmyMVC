@@ -1,8 +1,8 @@
 {#<div onclick={navigateToProduct()} class="product-wrapper d-flex flex-column justify-content-between">#}
 <div class="product-wrapper d-flex flex-column justify-content-between">
     <div class="product-img-wrapper">
-        <a href="{% url 'product-details' product.id %}"><img class="product-img" src="{{ product.image.url }}"
-                                                              alt="Imagen de producto"/></a>
+        <a href="{% url 'product-details' product.id %}">
+            <img class="product-img" src="{{ product.image.url }}" alt="Imagen de producto"/></a>
     </div>
     <div>
         <p class="product-desc">

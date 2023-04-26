@@ -1,4 +1,5 @@
 import json
+from os.path import splitext
 
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
@@ -23,7 +24,7 @@ from app_main.serializers import ProductSerializer
 def get_global_context(request):
     current_site = get_current_site(request)
     cart = Cart(request)
-    print(json.dumps(cart.all(), indent=2))
+    # print(json.dumps(cart.all(), indent=2))
     total = 0
     for item in cart.all():
         total = total + (float(item['product']['price']) * float(item['quantity']))
@@ -124,7 +125,14 @@ class ProductDetailsView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        prod = self.get_object(self.queryset)
+        prod: Product = self.get_object(self.queryset)
+        image = open(prod.image.path, 'rb')
+        name, ext = splitext(prod.image.name)
+        index = name.rfind('/')
+        name2 = name[index + 1:]
+        print(name)
+        print(name2)
+        print(ext)
         context['title'] = f'Fitness Army | {prod.name}'
         context['current_url'] = reverse_lazy('index')
         context.update(get_global_context(self.request))
@@ -150,7 +158,8 @@ class CatalogView(generic.ListView):
         context['title'] = 'Fitness Army | Catálogo'
         context['current_url'] = reverse_lazy('index')
         context['catalog'] = True
-        context['high_price'] = Product.objects.filter(is_active=True).order_by('-price')[0].price
+        products = self.get_queryset()
+        context['high_price'] = products.order_by('-price')[0].price
         return context
 
 
@@ -218,7 +227,7 @@ def subscribe(request):
     # Send confirmation email
     current_site = get_current_site(request)
     subject = 'Subscripción hecha ' + current_site.domain
-    mail = create_mail(email, subject, 'mails/subscripcion.html', {
+    mail = create_mail([email], subject, 'mails/subscripcion.html', {
         'host': get_host_url(request),
         "domain": current_site.domain,
         "uid": urlsafe_base64_encode(force_bytes(email)),
@@ -312,10 +321,9 @@ def cancel_order(request, *args, **kwargs):
 def send_email_order(request, orden: Orden, mensaje: str):
     current_site = get_current_site(request)
     subject = 'Compra realizada ' + current_site.domain
-    mail = create_mail(orden.email, subject, 'mails/orden.html', {
+    mail = create_mail([orden.email], subject, 'mails/orden.html', {
         'host': get_host_url(request),
         "domain": current_site.domain,
-        # 'mensaje': mensaje.replace(" <br/> ", "\n"),
         'mensaje': mensaje.replace("\n", "<br>"),
         'cfg': Config.objects.first() if Config.objects.exists() else None
     })

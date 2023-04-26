@@ -29,7 +29,7 @@ def create_mail(to, subject, template_name, context):
         subject=subject,
         body='',
         from_email=settings.EMAIL_HOST_USER,
-        to=[to],
+        to=to,
         cc=[]
     )
     message.attach_alternative(content, 'text/html')

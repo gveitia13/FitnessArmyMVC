@@ -1,4 +1,5 @@
-from ckeditor.fields import RichTextField
+import uuid
+
 from django.core.mail import send_mail
 from django.db import models
 from django.forms import model_to_dict
@@ -6,11 +7,9 @@ from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from solo.models import SingletonModel
-import uuid
 
 from FitnessArmyMVC import settings
 from FitnessArmyMVC.settings import STATIC_URL
-from FitnessArmyMVC.utils import create_mail
 
 
 class Config(SingletonModel):
@@ -91,11 +90,6 @@ class Product(models.Model):
     def info_tag(self):
         return self.info
 
-    # def get_image(self):
-    #     if self.image:
-    #         return self.image.url
-    #     return f'{STATIC_URL}img/empty.png'
-
     def img_link(self):
         if self.image:
             return mark_safe(
@@ -107,6 +101,13 @@ class Product(models.Model):
 
     img_link.short_description = 'Vista previa'
     info_tag.short_description = 'Información'
+
+    def create_message_product(self):
+        message = f'<b>Nombre:</b> {self.name}<br>'
+        message += f'<b>Precio:</b> {self.price}<br>'
+        if self.info:
+            message += f'<b>Descripción:</b> {self.info}<br>'
+        return message
 
 
 class Property(models.Model):

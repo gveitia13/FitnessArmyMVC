@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Producto</title>
+</head>
+<body>
+<p>{{ message|safe }}</p>
+<a href="{{ host }}{{ domain }}{% url 'product-details' product.pk %}">Ver detalles</a>
+
+</body>
+</html>
