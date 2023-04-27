@@ -36,6 +36,7 @@ def get_global_context(request):
         "domain": current_site.domain,
         'product_in_cart': cart.all(),
         'product_in_cart_json': json.dumps(cart.all()),
+        'product_in_cart_count': len(cart.all()),
         'total': total,
         'search': request.session['search'] if 'search' in request.session else ''
     }
@@ -48,8 +49,10 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         qs = super().get_queryset()
         if self.request.GET.get('search'):
+            qs = Product.objects.filter(is_active=True)
             qs = qs.filter(name__icontains=self.request.GET.get('search'))
             self.request.session['search'] = self.request.GET.get('search')
+            return qs
         else:
             self.request.session['search'] = ''
         return qs.filter(is_important=True, is_active=True)
@@ -76,12 +79,19 @@ class ProductDetailsView(generic.DetailView):
         context['title'] = f'Fitness Army | {prod.name}'
         context['current_url'] = reverse_lazy('index')
         context.update(get_global_context(self.request))
+        cart = Cart(self.request)
+        try:
+            context['quantity'] = cart.get(str(prod.id))['quantity']
+            context['is_added'] = True
+        except:
+            context['quantity'] = 1
         return context
 
 
 class CatalogView(generic.ListView):
     model = Product
     template_name = 'pages/catalog.html'
+    queryset = Product.objects.filter(is_active=True)
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -118,8 +128,7 @@ class CatalogView(generic.ListView):
         context['current_url'] = reverse_lazy('index')
         context['catalog'] = True
         products = self.get_queryset()
-        context['high_price'] = int(
-            Product.objects.filter(is_active=True).order_by('-price')[0].price)
+        context['high_price'] = int(Product.objects.filter(is_active=True).order_by('-price')[0].price)
         context['ordering'] = self.request.session['ordering'] if 'ordering' in self.request.session else 'name'
         context['price_from'] = self.request.session['price_from'] if 'price_from' in self.request.session else ''
         context['price_to'] = self.request.session['price_to'] if 'price_to' in self.request.session else ''

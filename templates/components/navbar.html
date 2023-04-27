@@ -9,9 +9,9 @@
               <li><a {% if inicio %}aria-current="page" {% endif %}
                      class="nav-item {% if inicio %}active{% endif %}" href="{% url 'index' %}">Inicio</a></li>
               <li><a {% if catalog %}aria-current="page" {% endif %}
-                     class="nav-item {% if catalog %}active{% endif %}" href="{% url 'catalog' %}">Catalog</a></li>
+                     class="nav-item {% if catalog %}active{% endif %}" href="{% url 'catalog' %}">Catálogo</a></li>
               <li><a {% if contact %}aria-current="page" {% endif %}
-                     class="nav-item {% if contact %}active{% endif %}" href="{% url 'contact' %}">Contact</a></li>
+                     class="nav-item {% if contact %}active{% endif %}" href="{% url 'contact' %}">Contacto</a></li>
             </span>
         {% comment %}        <span class="nav-redes p-2 d-md-none">
             <i class="icono fa fa-facebook"></i>
@@ -28,5 +28,14 @@
             <i class="icono fa fa-close nav-search-close"></i>
         </form>
     </div>
-    <a href="{% url 'cart' %}"><i class="icono fa fa-shopping-cart"></i></a>
+    <div class="position-relative">
+        <a href="{% url 'cart' %}"><i class="icono fs-3 fa fa-shopping-cart"></i></a>
+        {% if product_in_cart_count %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                {{ product_in_cart_count }}
+        <span class="visually-hidden">Productos en el carrito</span>
+        </span>
+        {% endif %}
+    </div>
+    {#    <a href="{% url 'cart' %}"><i class="icono fa fa-shopping-cart"></i></a>#}
 </div>

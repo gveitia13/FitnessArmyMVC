@@ -12,11 +12,12 @@
                 <span>Cantidad</span>
                 <div class="counter-wrapper mt-1 d-flex justify-content-between align-items-center">
                     <i onclick={restar(0)} class="icono fa fa-minus fw-lighter counter-sub"></i>
-                    <span class="fw-bold counter-num">1</span>
+                    <span class="fw-bold counter-num">{{ quantity }}</span>
                     <i onclick={sumar(0)} class="icono fa fa-plus counter-sum"></i>
                 </div>
             </div>
-            <div class="addCart-button text-center mt-3">Añadir al carro</div>
+            <div class="addCart-button text-center mt-3">{% if not is_added %}Añadir al carrito{% else %}Actualizar
+                carrito{% endif %}</div>
             {% csrf_token %}
             <div class="properties-wrapper text text-muted mt-3">
                 <h5>Propiedades</h5>
@@ -40,10 +41,14 @@
             let counter = document.querySelector('.counter-num').innerText
             console.log(counter)
             let http = new EasyHTTP
-            http.post(`{{ host }}{{ domain }}/cart/add/{{ object.id }}/${counter}/`, {}, '{{ csrf_token }}')
+            let url = `{{ host }}{{ domain }}/cart/add/{{ object.id }}/${counter}/`
+            if ('{{ is_added }}')
+                url = `{{ host }}{{ domain }}/cart/update_quantity/{{ object.id }}/${counter}/`
+
+            http.post(url, {}, '{{ csrf_token }}')
                 .then(data => {
                     console.log(data)
-                    location.replace(data.url)
+                    location.reload()
                 })
                 .catch(err => {
                     console.error(err)

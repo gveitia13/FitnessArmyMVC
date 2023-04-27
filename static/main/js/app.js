@@ -98,7 +98,9 @@ try {
     price_close_button[1].addEventListener('click', () => {
         price_wrapper[0].className += ' price-close';
     });
-
+    price_close_button[2].addEventListener('click', () => {
+        price_wrapper[0].className += ' price-close';
+    });
 } catch (e) {
     console.log(e)
 }

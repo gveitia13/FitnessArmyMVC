@@ -1,18 +1,22 @@
 {% extends 'root.html' %}
 {% block content %}
     <div class="catalog-wrapper">
-        <h2 class="text-center">Productos</h2>
-        <div class="text-muted d-flex justify-content-between">
-            <span class="sort-button"><i class="icono fa fa-sort"></i>Filtros y búsqueda</span>
-            <span>{{ object_list.count }} productos</span>
-        </div>
-        <div class="row mt-2">
-            {% for product in object_list %}
-                <div class="col-6 col-lg-3 col-md-4">
-                    {% include 'components/product.html' %}
-                </div>
-            {% endfor %}
-        </div>
+        {% if object_list %}
+            <h2 class="text-center pt-3">Todos los productos</h2>
+            <div class="text-muted d-flex justify-content-between">
+                <span class="sort-button"><i class="icono fa fa-sort"></i>Filtros y búsqueda</span>
+                <span>{{ object_list.count }} productos</span>
+            </div>
+            <div class="row mt-2">
+                {% for product in object_list %}
+                    <div class="col-6 col-lg-3 col-md-4">
+                        {% include 'components/product.html' %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h2 class="my-3 text-center">No se encontraron productos que coincidan con "{{ search }}"</h2>
+        {% endif %}
 
         <div class="filter-wrapper d-flex flex-column justify-content-between filter-close">
             <div>
@@ -47,7 +51,7 @@
                 <hr class="dropdown-divider"/>
                 <div class="d-flex justify-content-between">
                     <button class="filter-remove-button">Quitar todo</button>
-                    <button class="filter-apply-button">Aplicar</button>
+                    <button class="filter-apply-button" id="btn-buscar">buscar</button>
                 </div>
             </div>
         </div>
@@ -103,14 +107,16 @@
                     <div class="col-6">
                         <div class="form-floating">
                             <input type="number" class="form-control input-price" id="price-from" min="0"
-                                   max="{{ high_price }}" value="{{ price_from }}"/>
+                                   max="{{ high_price }}" value="{{ price_from }}"
+                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
                             <label for="price-from">Desde</label>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-floating">
                             <input type="number" class="form-control input-price" id="price-to" max="{{ high_price }}"
-                                   min="0" value="{{ price_to }}"/>
+                                   min="0" value="{{ price_to }}"
+                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
                             <label for="price-to">hasta</label>
                         </div>
                     </div>
@@ -120,7 +126,7 @@
                 <hr class="dropdown-divider"/>
                 <div class="d-flex justify-content-between">
                     <button class="filter-remove-button">Borrar</button>
-                    <button class="filter-apply-button">Aplicar</button>
+                    <button class="filter-apply-button price-close-button">Aplicar</button>
                 </div>
             </div>
         </div>
@@ -135,10 +141,13 @@
             document.querySelector('#price-to').value = ''
             document.querySelector('#price-from').value = ''
         })
-        document.querySelectorAll('.input-price').forEach(e => e.addEventListener('change', function () {
-            if (parseInt(this.value) > parseInt('{{ high_price }}'))
+        document.querySelectorAll('.input-price').forEach(e => e.addEventListener('input', function () {
+            console.log(this.value.charCode)
+            if (this.value.includes('e'))
+                this.value = this.value.replaceAll('e', '')
+            if (parseFloat(this.value) > parseFloat('{{ high_price }}'))
                 this.value = '{{ high_price }}'
-            if (parseInt(this.value) < 0)
+            if (parseFloat(this.value) < 0)
                 this.value = 0
         }))
         document.querySelector('.filter-wrapper .filter-remove-button').addEventListener('click', _ => {
@@ -148,6 +157,11 @@
         })
         document.querySelector('#form-search').addEventListener('submit', function (e) {
             e.preventDefault()
+            buscar()
+        })
+        document.querySelector('#btn-buscar').addEventListener('click', _ => buscar())
+
+        let buscar = _ => {
             let input_search = document.querySelector('#search-input').value,
                 price_to = document.querySelector('#price-to').value,
                 price_from = document.querySelector('#price-from').value,
@@ -161,6 +175,6 @@
                 url += `&price_from=${price_from}`
             url += `&ordering=${ordering}`
             location.replace(url)
-        })
+        }
     </script>
 {% endblock %}

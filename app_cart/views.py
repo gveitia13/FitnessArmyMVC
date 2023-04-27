@@ -2,15 +2,14 @@ import json
 
 from django.contrib import messages
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
+from FitnessArmyMVC.settings import CART_SESSION_ID
 from app_cart.cart import Cart
 from app_main.models import Product
-from FitnessArmyMVC.settings import CART_SESSION_ID
 from app_main.serializers import ProductSerializer
 
 
@@ -65,6 +64,7 @@ def update_quant(request: HttpRequest, id: int, value: int):
     for item in cart.session[CART_SESSION_ID]:
         total = total + (float(cart.session[CART_SESSION_ID].get(item)['product']['price']) *
                          float(cart.session[CART_SESSION_ID].get(item)['quantity']))
+    messages.success(request, f'{product.name} fue actualizado en el carrito')
     return JsonResponse({
         "result": "ok",
         "total": total,
