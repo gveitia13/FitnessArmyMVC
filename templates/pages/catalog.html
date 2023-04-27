@@ -142,7 +142,6 @@
             document.querySelector('#price-from').value = ''
         })
         document.querySelectorAll('.input-price').forEach(e => e.addEventListener('input', function () {
-            console.log(this.value.charCode)
             if (this.value.includes('e'))
                 this.value = this.value.replaceAll('e', '')
             if (parseFloat(this.value) > parseFloat('{{ high_price }}'))
