@@ -18,22 +18,16 @@ class Config(SingletonModel):
     address = models.CharField('Dirección', max_length=200, null=True, blank=True)
     phone_number = models.CharField('Teléfono', unique=True, null=True, blank=True, max_length=15, error_messages={
         'unique': 'Ya este teléfono está registrado'}, help_text='Poner el código del país')
-    # google_maps = models.CharField(max_length=900, verbose_name='Mapa de google')
     # social networks
     instagram = models.URLField('Link de Instagram', null=True, blank=True, )
     facebook = models.URLField('Link de Facebook', null=True, blank=True, )
     twitter = models.URLField('Link de Twitter', null=True, blank=True, )
     whatsapp = models.CharField('Número de Whatsapp', null=True, blank=True, max_length=150)
-    # telegram = models.CharField('Link de telegram', null=True, blank=True, max_length=100)
-    # Pagos
-    # mlc = models.CharField('Tarjeta MLC', validators=[MinLengthValidator(16), validate_only_numbers], max_length=16,
-    #                        unique=True, null=True, blank=True)
-    # cup = models.CharField('Tarjeta CUP', validators=[MinLengthValidator(16), validate_only_numbers], max_length=16,
-    #                        unique=True, null=True, blank=True)
     # Fotos
     logo = models.ImageField('Logo', upload_to='config/logo/')
     icon = models.ImageField('Ícono', upload_to='config/icon/')
     banner = models.ImageField('Banner', upload_to='config/banner/')
+    footer = models.ImageField('Footer', upload_to='config/footer/')
 
     def __str__(self):
         return self.name
@@ -51,17 +45,22 @@ class Config(SingletonModel):
         return mark_safe(f'<a href="{self.logo.url}"><img src="{self.logo.url}" class="agrandar mb-2 mr-2" '
                          f'height="60" /></a>')
 
+    def get_footer(self):
+        return mark_safe(f'<a href="{self.footer.url}"><img src="{self.footer.url}" class="agrandar mb-2 mr-2" '
+                         f'height="60" /></a>')
+
     def get_icon(self):
-        return mark_safe(f'<a href="{self.icon}"><img src="{self.icon}" class="agrandar mb-2 mr-2" '
+        return mark_safe(f'<a href="{self.icon.url}"><img src="{self.icon.url}" class="agrandar mb-2 mr-2" '
                          f'height="60" /></a>')
 
     def get_banner(self):
-        return mark_safe(f'<a href="{self.banner}"><img src="{self.banner}" class="agrandar mb-2 mr-2" '
+        return mark_safe(f'<a href="{self.banner.url}"><img src="{self.banner.url}" class="agrandar mb-2 mr-2" '
                          f'height="60" /></a>')
 
     get_logo.short_description = 'Vista previa'
     get_icon.short_description = 'Vista previa'
     get_banner.short_description = 'Vista previa'
+    get_footer.short_description = 'Vista previa'
 
 
 class Product(models.Model):

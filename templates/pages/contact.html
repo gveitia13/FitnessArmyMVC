@@ -1,7 +1,10 @@
 {% extends 'root.html' %}
 {% block content %}
     <div class="contact-wrapper">
-        <h2 class="text-center pt-3">Contáctenos</h2>
+        <div class="d-flex align-items-center pt-3">
+            <a href="{{ previous_url }}" class="position-absolute"><i class="icono fa fa-arrow-left"></i></a>
+            <h2 class="mx-auto">Contáctenos</h2>
+        </div>
         <form class="my-5" method="post">
             {% csrf_token %}
             <div class="row mb-3">

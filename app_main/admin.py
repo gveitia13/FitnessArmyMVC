@@ -16,11 +16,11 @@ class ConfigAdmin(SingletonModelAdmin):
          {'fields': ('name', 'email', 'address', 'phone_number',)}),
         ('Redes sociales',
          {'fields': ('instagram', 'facebook', 'twitter', 'whatsapp',)}),
-        ('Fotos', {'fields': ('logo', 'get_logo', 'icon', 'banner',)})
+        ('Fotos', {'fields': ('logo', 'get_logo', 'icon', 'get_icon', 'banner', 'get_banner', 'footer', 'get_footer')})
     ]
 
     form = ConfigForm
-    readonly_fields = ['get_logo']
+    readonly_fields = ['get_logo', 'get_icon', 'get_banner', 'get_footer']
 
 
 class PropertyInline(admin.TabularInline):

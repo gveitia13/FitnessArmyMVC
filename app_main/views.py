@@ -29,6 +29,8 @@ def get_global_context(request):
     for item in cart.all():
         total = total + (float(item['product']['price']) * float(item['quantity']))
     print(total)
+    previous_url = request.META.get('HTTP_REFERER', reverse_lazy('index'))
+    print(previous_url)
     return {
         'cfg': Config.objects.first() if Config.objects.exists() else None,
         'product_list': Product.objects.filter(is_active=True),
@@ -38,7 +40,8 @@ def get_global_context(request):
         'product_in_cart_json': json.dumps(cart.all()),
         'product_in_cart_count': len(cart.all()),
         'total': total,
-        'search': request.session['search'] if 'search' in request.session else ''
+        'search': request.session['search'] if 'search' in request.session else '',
+        'previous_url': previous_url
     }
 
 
