@@ -24,13 +24,29 @@ from app_main.serializers import ProductSerializer
 def get_global_context(request):
     current_site = get_current_site(request)
     cart = Cart(request)
-    # print(json.dumps(cart.all(), indent=2))
     total = 0
     for item in cart.all():
         total = total + (float(item['product']['price']) * float(item['quantity']))
     print(total)
-    previous_url = request.META.get('HTTP_REFERER', reverse_lazy('index'))
+    # previous_url = request.META.get('HTTP_REFERER', reverse_lazy('index'))
+
+    previous_url: [] = request.session.get('previous_url', [])
+    previous_url.append(request.build_absolute_uri())
+
+    request.session['previous_url'] = previous_url
+    last_url = previous_url[-1]
+    if len(previous_url) > 1:
+        i = len(previous_url) - 1
+
+        while i >= 1:
+            if previous_url[i] != previous_url[-1]:
+                last_url = previous_url[i]
+                break
+            i -= 1
+    else:
+        last_url = previous_url[0]
     print(previous_url)
+    print(last_url)
     return {
         'cfg': Config.objects.first() if Config.objects.exists() else None,
         'product_list': Product.objects.filter(is_active=True),
@@ -41,7 +57,7 @@ def get_global_context(request):
         'product_in_cart_count': len(cart.all()),
         'total': total,
         'search': request.session['search'] if 'search' in request.session else '',
-        'previous_url': previous_url
+        'previous_url': last_url
     }
 
 
