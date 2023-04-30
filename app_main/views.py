@@ -57,7 +57,7 @@ def get_global_context(request):
         'product_in_cart_count': len(cart.all()),
         'total': total,
         'search': request.session['search'] if 'search' in request.session else '',
-        'previous_url': last_url
+        'previous_url': reverse_lazy('index')
     }
 
 
@@ -104,6 +104,7 @@ class ProductDetailsView(generic.DetailView):
             context['is_added'] = True
         except:
             context['quantity'] = 1
+        context['previous_url'] = reverse_lazy('catalog')
         return context
 
 
