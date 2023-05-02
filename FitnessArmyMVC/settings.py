@@ -217,6 +217,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'noreply.paula8@gmail.com'
-EMAIL_HOST_PASSWORD = 'ygjeeypvloptzxzp'
+EMAIL_HOST_PASSWORD = 'okjqwaeuvqalsepc'
 
 CART_SESSION_ID = "cart"

@@ -225,7 +225,11 @@ def subscribe(request):
         "uid": urlsafe_base64_encode(force_bytes(email)),
         'cfg': Config.objects.first() if Config.objects.exists() else None
     })
-    mail.send(fail_silently=False)
+    try:
+        mail.send(fail_silently=False)
+        print('Se envio el correo en talla')
+    except Exception as e:
+        print(str(e))
     messages.success(request,
                      f'Has sido subscrito a Fitness Army, le mantendremos informados de nuestras novedades.')
     return redirect(reverse('index'))
