@@ -46,9 +46,9 @@
             let counter = document.querySelector('.counter-num').innerText
             console.log(counter)
             let http = new EasyHTTP
-            let url = `{{ host }}{{ domain }}/cart/add/{{ object.id }}/${counter}/`
+            let url = `/cart/add/{{ object.id }}/${counter}/`
             if ('{{ is_added }}')
-                url = `{{ host }}{{ domain }}/cart/update_quantity/{{ object.id }}/${counter}/`
+                url = `/cart/update_quantity/{{ object.id }}/${counter}/`
 
             http.post(url, {}, '{{ csrf_token }}')
                 .then(data => {

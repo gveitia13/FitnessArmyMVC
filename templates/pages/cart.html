@@ -84,7 +84,7 @@
                 </div>
             </div>
         </div>
-        <button type="submit">Pagar</button>
+        <button {% if not product_in_cart_count %} disabled {% endif %} type="submit">Pagar</button>
     </form>
 {% endblock %}
 
@@ -101,7 +101,7 @@
             })
                 .then(value => {
                     if (!value) throw null;
-                    return fetch(`{{ host }}{{ domain }}/cart/clear/${id}/`);
+                    return fetch(`/cart/clear/${id}/`);
                 })
                 .then(results => {
                     return results.json();
@@ -125,7 +125,7 @@
                 lista.push({'id': e.attributes['prod_id'].value, 'cant': e.innerText})
             })
             let http = new EasyHTTP
-            http.post('{{ host }}{{ domain }}{% url "cart_update_cart" %}', lista, '{{ csrf_token }}')
+            http.post('{% url "cart_update_cart" %}', lista, '{{ csrf_token }}')
                 .then(data => {
                     if (data.result === 'ok')
                         location.reload()

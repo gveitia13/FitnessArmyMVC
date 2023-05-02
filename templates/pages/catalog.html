@@ -171,7 +171,7 @@
                 price_to = document.querySelector('#price-to').value,
                 price_from = document.querySelector('#price-from').value,
                 ordering = document.querySelector('.filter-order').value,
-                url = '{{ host }}{{ domain }}{% url 'catalog' %}?search='
+                url = '{% url 'catalog' %}?search='
             if (input_search)
                 url += `${input_search.replace(' ', '+')}`
             if (price_to)
