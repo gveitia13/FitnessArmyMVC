@@ -323,5 +323,8 @@ def send_email_order(request, orden: Orden, mensaje: str):
         'mensaje': mensaje.replace("\n", "<br>"),
         'cfg': Config.objects.first() if Config.objects.exists() else None
     })
-    mail.send()
-    print('Se envió un correo de orden')
+    try:
+        mail.send()
+        print('Se envió un correo de orden')
+    except Exception as e:
+        print(str(e))
