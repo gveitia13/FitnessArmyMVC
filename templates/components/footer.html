@@ -18,9 +18,18 @@
 
         </div>
         <div class="footer-redes my-3 text-center">
-            <a href="{{ cfg.facebook }}"><i class="icono fa fa-facebook"></i></a>
-            <a href="{{ cfg.instagram }}"><i class="icono fa fa-instagram"></i></a>
-            <a href="{{ cfg.twitter }}"><i class="icono fa fa-twitter"></i></a>
+            {% if cfg.facebook %}
+                <a href="{{ cfg.facebook }}"><i class="icono fa fa-facebook"></i></a>
+            {% endif %}
+            {% if cfg.instagram %}
+                <a href="{{ cfg.instagram }}"><i class="icono fa fa-instagram"></i></a>
+            {% endif %}
+            {% if cfg.twitter %}
+                <a href="{{ cfg.twitter }}"><i class="icono fa fa-twitter"></i></a>
+            {% endif %}
+            {% if cfg.whatsapp %}
+                <a href="{{ cfg.twitter }}"><i class="icono fa fa-whatsapp"></i></a>
+            {% endif %}
         </div>
     </div>
     <hr class="dropdown-divider"/>

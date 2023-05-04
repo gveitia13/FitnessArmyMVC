@@ -33,7 +33,7 @@ class PropertyInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
-        'name', 'img_link', 'price', 'sales', 'is_active', 'is_important')
+        'name', 'img_link', 'price', 'sales', 'is_active', 'is_important', 'created', 'updated')
     fieldsets = [
         ('Datos Principales:', {
             'fields': ('name', 'price', 'is_active', 'is_important')
@@ -44,10 +44,12 @@ class ProductAdmin(admin.ModelAdmin):
     ]
     search_fields = ('name',)
     list_per_page = 10
+    list_filter = ('updated','created','is_active', 'is_important',)
     actions = ['Desactivar_productos', 'Activar_productos']
     readonly_fields = ('img_link',)
     inlines = (PropertyInline,)
     form = ProductForm
+    exclude = ['created', 'updated']
 
     def Desactivar_productos(self, request, queryset):
         for p in queryset:

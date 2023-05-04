@@ -44,6 +44,10 @@
                 <div class="d-flex justify-content-between align-items-baseline text-muted my-4">
                     <span class="flex-grow-1">Ordenar por:</span>
                     <select class="form-select small filter-order" aria-label="Default select example">
+                        <option {% if ordering == '-updated' %} selected {% endif %} value="-updated">Más reciente
+                        </option>
+                        <option {% if ordering == 'updated' %} selected {% endif %} value="updated">Menos reciente
+                        </option>
                         <option {% if ordering == 'name' %} selected {% endif %} value="name">Alfabéticamente, A-Z
                         </option>
                         <option {% if ordering == '-name' %} selected {% endif %} value="-name">Alfabéticamente, Z-A

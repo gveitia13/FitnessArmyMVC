@@ -125,7 +125,7 @@ class CatalogView(generic.ListView):
             qs = qs.order_by(self.request.GET.get('ordering'))
             self.request.session['ordering'] = self.request.GET.get('ordering')
         else:
-            self.request.session['ordering'] = 'name'
+            self.request.session['ordering'] = '-updated'
 
         if self.request.GET.get('price_from'):
             qs = qs.filter(price__gte=self.request.GET.get('price_from'))
@@ -149,7 +149,7 @@ class CatalogView(generic.ListView):
         context['catalog'] = True
         products = self.get_queryset()
         context['high_price'] = int(Product.objects.filter(is_active=True).order_by('-price')[0].price)
-        context['ordering'] = self.request.session['ordering'] if 'ordering' in self.request.session else 'name'
+        context['ordering'] = self.request.session['ordering'] if 'ordering' in self.request.session else '-updated'
         context['price_from'] = self.request.session['price_from'] if 'price_from' in self.request.session else ''
         context['price_to'] = self.request.session['price_to'] if 'price_to' in self.request.session else ''
         return context

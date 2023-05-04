@@ -22,7 +22,7 @@ class Config(SingletonModel):
     instagram = models.URLField('Link de Instagram', null=True, blank=True, )
     facebook = models.URLField('Link de Facebook', null=True, blank=True, )
     twitter = models.URLField('Link de Twitter', null=True, blank=True, )
-    whatsapp = models.CharField('Número de Whatsapp', null=True, blank=True, max_length=150)
+    whatsapp = models.URLField('Link de Whatsapp', null=True, blank=True)
     # Fotos
     logo = models.ImageField('Logo', upload_to='config/logo/')
     icon = models.ImageField('Ícono', upload_to='config/icon/')
@@ -71,6 +71,8 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='Visible')
     is_important = models.BooleanField('Destacado', default=False)
     sales = models.PositiveIntegerField(verbose_name='Ventas', default=0)
+    created = models.DateTimeField('Creado', auto_now_add=True, )
+    updated = models.DateTimeField('Modificado', auto_now=True)
 
     def __str__(self):
         return self.name
@@ -85,7 +87,7 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Producto'
         verbose_name_plural = 'Productos'
-        ordering = ['name']
+        ordering = ['-updated', '-created']
 
     def info_tag(self):
         return self.info
