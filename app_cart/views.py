@@ -64,7 +64,9 @@ def update_quant(request: HttpRequest, id: int, value: int):
     for item in cart.session[CART_SESSION_ID]:
         total = total + (float(cart.session[CART_SESSION_ID].get(item)['product']['price']) *
                          float(cart.session[CART_SESSION_ID].get(item)['quantity']))
-    messages.success(request, f'{product.name} fue actualizado en el carrito')
+    print(request.path)
+    if not request.path.__contains__('cart'):
+        messages.success(request, f'{product.name} fue actualizado en el carrito')
     return JsonResponse({
         "result": "ok",
         "total": total,

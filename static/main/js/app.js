@@ -17,6 +17,8 @@ let product_wrapper = document.getElementsByClassName('product-wrapper');
 let counter_num = document.getElementsByClassName('counter-num');
 let counter_sub = document.getElementsByClassName('counter-sub');
 let counter_sum = document.getElementsByClassName('counter-sum');
+let prod_subtotal = document.getElementsByClassName('prod-subtotal')
+let prod_price = document.getElementsByClassName('prod-price')
 
 function navigateToProduct() {
     let url = window.location.href.split('/');
@@ -31,13 +33,68 @@ function navigateToProduct() {
 function sumar(pos) {
     let currentValue = parseInt(counter_num[pos].innerHTML);
     counter_num[pos].innerHTML = (currentValue + 1);
+    return currentValue + 1
 }
 
 function restar(pos) {
     let currentValue = parseInt(counter_num[pos].innerHTML);
     if (currentValue > 1) {
         counter_num[pos].innerHTML = (currentValue - 1);
+        return currentValue - 1
     }
+}
+
+function sumar_cart(pos, id) {
+    let currentValue = parseInt(counter_num[pos].innerHTML)
+    update_quantity(id, currentValue + 1, pos, pos => sumar(pos))
+    /*
+        let cant = sumar(pos)
+        let subtotal = parseFloat(prod_price[pos].innerHTML) * cant
+        prod_subtotal[pos].innerHTML = subtotal.toFixed(2)
+        count_total()
+        update_quantity(id, cant)*/
+}
+
+function restar_cart(pos, id) {
+    let currentValue = parseInt(counter_num[pos].innerHTML)
+    if (currentValue > 1) {
+        update_quantity(id, currentValue - 1, pos, pos => restar(pos))
+    }
+    // let cant = restar(pos)
+    // if (cant) {
+    //     let subtotal = parseFloat(prod_price[pos].innerHTML) * cant
+    //     prod_subtotal[pos].innerHTML = subtotal.toFixed(2)
+    // }
+    // count_total()
+    // update_quantity(id, cant)
+}
+
+function update_quantity(id, value, pos, funct) {
+    let http = new EasyHTTP,
+        url = `/cart/update_quantity/${id}/${value}/`
+
+    http.post(url, {}, '{{ csrf_token }}')
+        .then(data => {
+            console.log(data)
+            funct(pos)
+            let subtotal = parseFloat(prod_price[pos].innerHTML) * data.amount
+            prod_subtotal[pos].innerHTML = subtotal.toFixed(2)
+            count_total()
+        })
+        .catch(err => {
+            console.error(err)
+            if (err)
+                swal("Error", "Hay un problema de conexión en el servidor", "error");
+        })
+}
+
+function count_total() {
+    let total_cart = document.querySelector('#total-cart')
+    let total = 0
+    Array.from(prod_subtotal).forEach(e => {
+        total += parseFloat(e.innerHTML)
+    })
+    total_cart.innerHTML = total.toFixed(2)
 }
 
 if (window.screen.width > 576) {

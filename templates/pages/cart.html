@@ -22,25 +22,27 @@
                         <img src="{{ product.product.image }}" alt="imagen de producto"/>
                         <span class="">
                             <p class="fw-normal">{{ product.product.name }}</p>
-                            <span>$<b>{{ product.product.price|floatformat:2 }}</b></span>
+                            <span class="">$<b class="prod-price">{{ product.product.price|floatformat:2 }}</b></span>
                         </span>
                     </td>
                     <td>
                         <div class="d-flex flex-column flex-md-row align-items-center">
                             <div class="counter-wrapper mt-1 me-2 mb-3 mb-sm-0 d-flex justify-content-between
                             align-items-center">
-                                <i onclick="{restar({{ forloop.counter0 }})}"
+                                <i onclick="{restar_cart({{ forloop.counter0 }}, {{ product.id }})}"
                                    class="icono fa fa-minus fw-lighter counter-sub"></i>
                                 <span class="fw-bold counter-num"
                                       prod_id="{{ product.id }}">{{ product.quantity }}</span>
-                                <i onclick="{sumar({{ forloop.counter0 }})}"
+                                <i onclick="{sumar_cart({{ forloop.counter0 }}, {{ product.id }})}"
                                    class="icono fa fa-plus me-md-3 counter-sum"></i>
                             </div>
                             <i onclick="{eliminar({{ product.id }}, '{{ product.product.name }}')}"
                                class="icono fa fa-trash me-md-5"></i>
                         </div>
                     </td>
-                    <td>$<b>{{ product.product.price|multiply:product.quantity|floatformat:2 }}</b></td>
+                    <td class="">$<b
+                            class="prod-subtotal">{{ product.product.price|multiply:product.quantity|floatformat:2 }}</b>
+                    </td>
                 </tr>
             {% endfor %}
 
@@ -48,7 +50,7 @@
         </table>
         <div class="d-flex justify-content-between  pay-wrapper">
             <button id="update-cart">Actualizar carrito</button>
-            <span class="text-muted">Total $ {{ total|floatformat:2 }}</span>
+            <span class="">Total $ <b id="total-cart">{{ total|floatformat:2 }}</b></span>
         </div>
     </div>
 
@@ -138,5 +140,7 @@
                         swal("Error", "Hay un problema de conexión en el servidor", "error");
                 })
         })
+
+
     </script>
 {% endblock %}
