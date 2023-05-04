@@ -47,12 +47,6 @@ function restar(pos) {
 function sumar_cart(pos, id) {
     let currentValue = parseInt(counter_num[pos].innerHTML)
     update_quantity(id, currentValue + 1, pos, pos => sumar(pos))
-    /*
-        let cant = sumar(pos)
-        let subtotal = parseFloat(prod_price[pos].innerHTML) * cant
-        prod_subtotal[pos].innerHTML = subtotal.toFixed(2)
-        count_total()
-        update_quantity(id, cant)*/
 }
 
 function restar_cart(pos, id) {
@@ -60,13 +54,6 @@ function restar_cart(pos, id) {
     if (currentValue > 1) {
         update_quantity(id, currentValue - 1, pos, pos => restar(pos))
     }
-    // let cant = restar(pos)
-    // if (cant) {
-    //     let subtotal = parseFloat(prod_price[pos].innerHTML) * cant
-    //     prod_subtotal[pos].innerHTML = subtotal.toFixed(2)
-    // }
-    // count_total()
-    // update_quantity(id, cant)
 }
 
 function update_quantity(id, value, pos, funct) {
